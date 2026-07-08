@@ -1,11 +1,18 @@
 {
   "cohortName": "SOTI IT Support & QA Onboarding",
   "instructor": "Nevil",
-  "instructorEmail": "emmanuel.nevilbabu@soti.net",
+  "instructorEmail": "emmanuelnevill@gmail.com",
+  "adminCode": "CHANGE-ME-ADMIN",
+  "repo": {
+    "owner": "n-3vil",
+    "name": "Training-Portal",
+    "branch": "main"
+  },
   "students": [
     {
       "id": "alex",
       "name": "Alex Demo",
+      "code": "ALEX-2026",
       "track": "IT Support",
       "startDate": "2026-07-06",
       "completedModules": ["m1"]
@@ -13,6 +20,7 @@
     {
       "id": "sam",
       "name": "Sam Example",
+      "code": "SAM-2026",
       "track": "QA",
       "startDate": "2026-07-06",
       "completedModules": []
