@@ -67,3 +67,17 @@ Then it's already on Pages at `https://YOUR-USERNAME.github.io/REPO-NAME/`.
 - Add another instructor: add their email to both `ADMIN_EMAILS` in `firebase-config.js` and the `isAdmin()` list in `firestore.rules` (re-publish rules).
 - Free limits (Spark plan) are far above what a training cohort uses (tens of thousands of reads/writes per day).
 - Security: a student cannot read anyone else's data or grades — the Firestore rules enforce it on the server, not just in the page.
+
+---
+
+## Progress dashboard & managers (added later)
+
+**Dashboard.** When you log in as admin you now have a **Dashboard** tab as your first screen: a summary strip (active trainees, awaiting activation, homework waiting to be reviewed, overdue items) plus a table showing every trainee's plan %, homework graded/total, tasks done/total, and a status flag ("on track", "N to review", "N overdue") — everything pending at a glance.
+
+**Managers (view-only).** You can give managers a login that shows ONLY the progress dashboard — they can't add, grade, or change anything.
+
+To add a manager: admin panel → **Managers** tab → enter the manager's email → **Add manager**. Then tell that person to open the portal and **Register** using that same email and a password of their choice. On login they'll land straight on the dashboard with no editing tools.
+
+Remove a manager any time from the same tab.
+
+> If you re-publish the app after this update, also re-paste the updated `firestore.rules` (it now grants managers read-only access). Managers won't be able to see anything until the new rules are published.
