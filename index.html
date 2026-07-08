@@ -255,7 +255,7 @@ function renderShell(){
   const defs = role==="admin"?ADMIN_TABS:(role==="manager"?MANAGER_TABS:STUDENT_TABS);
   if(role==="pending"){ $("tabs").style.display="none"; renderPending(); return; }
   if(!defs.some(t=>t[0]===tab)) tab=defs[0][0];
-  $("header-sub").textContent = role==="admin" ? "Admin — "+user.email : (role==="manager" ? "Manager (view only) — "+user.email : "Signed in as "+((store.me&&store.me.name)||user.email));
+  $("header-sub").textContent = role==="admin" ? "Admin — Nevil" : (role==="manager" ? "Manager (view only) — "+user.email : "Signed in as "+((store.me&&store.me.name)||user.email));
   const nav=$("tabs"); nav.style.display="";
   nav.querySelector(".wrap").innerHTML = defs.map(([id,l])=>`<button data-tab="${id}" class="${id===tab?"active":""}">${l}</button>`).join("");
   nav.querySelectorAll("button").forEach(b=>b.onclick=()=>{ tab=b.dataset.tab; nav.querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b)); render(); });
