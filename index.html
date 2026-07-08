@@ -85,6 +85,15 @@
   .warn-card{background:var(--amber-soft);border-color:#f5cdae;font-size:.9rem}
   code{background:#f1f5f9;padding:1px 6px;border-radius:5px;font-size:.88em}
   .topic-edit{width:100%;min-height:90px}
+  .dash-wrap{overflow-x:auto}
+  table.dash{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+  table.dash th,table.dash td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap}
+  table.dash th{background:#f8fafc;color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.03em}
+  table.dash tr:last-child td{border-bottom:none}
+  .mini-bar{display:inline-block;width:80px;height:8px;background:#e2e8f0;border-radius:999px;overflow:hidden;vertical-align:middle;margin-right:6px}
+  .mini-bar > i{display:block;height:100%;background:var(--green)}
+  .dash-cards{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+  .dash-cards .card{flex:1;min-width:150px;margin-bottom:0}
   @media(max-width:640px){.form-grid{grid-template-columns:1fr}.eval-row{grid-template-columns:1fr 1fr}}
 </style>
 </head>
@@ -156,6 +165,8 @@ async function loadMeta(){ const s=await getDoc(metaRef()); store.meta = s.exist
 async function loadCollection(name){ const q=await getDocs(collection(db,name)); return q.docs.map(d=>({id:d.id,...d.data()})); }
 async function loadStudentDoc(uid){ const s=await getDoc(doc(db,"students",uid)); return s.exists()? s.data() : null; }
 async function loadSub(uid,sub){ const q=await getDocs(collection(db,"students",uid,sub)); const o={}; q.docs.forEach(d=>o[d.id]=d.data()); return o; }
+async function loadManagerEmails(){ try{ const m=await getDoc(doc(db,"config","managers")); store.managerEmails = m.exists()?(m.data().emails||[]):[]; }catch(e){ store.managerEmails=[]; } return store.managerEmails; }
+async function isManagerEmail(email){ const list=await loadManagerEmails(); return list.map(e=>String(e).toLowerCase()).includes(String(email||"").toLowerCase()); }
 
 /* ---------- auth screens ---------- */
 function renderAuth(mode){
@@ -191,7 +202,8 @@ function renderAuth(mode){
         const name=$("au-name").value.trim();
         if(!name){ setMsg("Please enter your name."); $("au-go").disabled=false; return; }
         const cred=await createUserWithEmailAndPassword(auth,email,pass);
-        if(!isAdminEmail(email)){
+        const mgr = await isManagerEmail(email).catch(()=>false);
+        if(!isAdminEmail(email) && !mgr){
           await setDoc(doc(db,"students",cred.user.uid),{ name, track:"", startDate:today(), completedModules:[], status:"pending", email });
         }
       }
@@ -211,15 +223,16 @@ function friendly(e){
 
 /* ---------- shell ---------- */
 const STUDENT_TABS=[["overview","Overview"],["plan","Training Plan"],["homework","Homework"],["tasks","Tasks"]];
-const ADMIN_TABS=[["a-students","Students"],["a-homework","Homework"],["a-tasks","Tasks"],["a-plan","Training Plan"]];
+const ADMIN_TABS=[["a-dashboard","Dashboard"],["a-students","Students"],["a-homework","Homework"],["a-tasks","Tasks"],["a-plan","Training Plan"],["a-managers","Managers"]];
+const MANAGER_TABS=[["a-dashboard","Dashboard"]];
 function renderShell(){
   $("cohort-name").textContent = (store.meta&&store.meta.cohortName) || "Training Portal";
   document.title = (store.meta&&store.meta.cohortName) || "SOTI Training Portal";
   $("logout-btn").style.display=""; 
-  const defs = role==="admin"?ADMIN_TABS:STUDENT_TABS;
+  const defs = role==="admin"?ADMIN_TABS:(role==="manager"?MANAGER_TABS:STUDENT_TABS);
   if(role==="pending"){ $("tabs").style.display="none"; renderPending(); return; }
   if(!defs.some(t=>t[0]===tab)) tab=defs[0][0];
-  $("header-sub").textContent = role==="admin" ? "Admin — "+user.email : "Signed in as "+((store.me&&store.me.name)||user.email);
+  $("header-sub").textContent = role==="admin" ? "Admin — "+user.email : (role==="manager" ? "Manager (view only) — "+user.email : "Signed in as "+((store.me&&store.me.name)||user.email));
   const nav=$("tabs"); nav.style.display="";
   nav.querySelector(".wrap").innerHTML = defs.map(([id,l])=>`<button data-tab="${id}" class="${id===tab?"active":""}">${l}</button>`).join("");
   nav.querySelectorAll("button").forEach(b=>b.onclick=()=>{ tab=b.dataset.tab; nav.querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b)); render(); });
@@ -236,6 +249,7 @@ function renderPending(){
 }
 function render(){
   const v={overview:vOverview,plan:vPlan,homework:vHomework,tasks:vTasks,
+    "a-dashboard":vDashboard,"a-managers":vAdmManagers,
     "a-students":vAdmStudents,"a-homework":vAdmHomework,"a-tasks":vAdmTasks,"a-plan":vAdmPlan};
   $("content").innerHTML=v[tab](); wire();
 }
@@ -254,7 +268,10 @@ async function loadStudent(){
 }
 async function loadAdmin(){
   await loadMeta();
+  await loadManagerEmails();
   store.students = await loadCollection("students");
+  const skip = new Set([...ADMIN_EMAILS, ...(store.managerEmails||[])].map(e=>String(e).toLowerCase()));
+  store.students = store.students.filter(s=>!skip.has(String(s.email||"").toLowerCase()));
   store.homework = await loadCollection("homework");
   store.tasks = await loadCollection("tasks");
   store.grades = {}; store.taskstatus = {};
@@ -436,6 +453,64 @@ function vAdmPlan(){
 }
 function needInit(){ return `<div class="card warn-card"><h3>Finish setup first</h3><p>Go to the <strong>Students</strong> tab and click “Initialize portal”.</p></div>`; }
 
+/* ---------- dashboard (admin + manager) ---------- */
+function vDashboard(){
+  if(!store.meta) return role==="manager"
+    ? '<p class="empty">The portal isn’t set up yet. Please check back once your instructor has initialized it.</p>'
+    : needInit();
+  const P=plan().length;
+  const pendingAct=students().filter(s=>s.status!=="active").length;
+  let toReview=0, overdueTotal=0;
+  const rows=activeStudents().map(s=>{
+    const done=(s.completedModules||[]).length, pct=P?Math.round(done/P*100):0;
+    const g=store.grades[s.id]||{}, ts=store.taskstatus[s.id]||{};
+    const myHw=store.homework.filter(h=>assignedTo(h,s.id));
+    let graded=0,submitted=0,hwOverdue=0;
+    myHw.forEach(h=>{ const st=(g[h.id]||{}).status||"pending";
+      if(st==="graded")graded++; else if(st==="submitted"){submitted++;toReview++;}
+      else if(h.due&&h.due<today()){hwOverdue++;} });
+    const myTasks=store.tasks.filter(t=>assignedTo(t,s.id));
+    let tDone=0,tOverdue=0;
+    myTasks.forEach(t=>{ const st=(ts[t.id]||{}).status||"not-started";
+      if(st==="done")tDone++; else if(t.due&&t.due<today()){tOverdue++;} });
+    const od=hwOverdue+tOverdue; overdueTotal+=od;
+    const flags=[];
+    if(submitted)flags.push(`<span class="badge b-blue">${submitted} to review</span>`);
+    if(od)flags.push(`<span class="badge b-red">${od} overdue</span>`);
+    if(!flags.length)flags.push(`<span class="badge b-green">On track</span>`);
+    return `<tr>
+      <td><strong>${esc(s.name)}</strong></td>
+      <td>${esc(s.track||"—")}</td>
+      <td><span class="mini-bar"><i style="width:${pct}%"></i></span>${pct}%</td>
+      <td>${graded}/${myHw.length}${submitted?` <span class="badge b-blue">${submitted} new</span>`:""}</td>
+      <td>${tDone}/${myTasks.length}</td>
+      <td>${flags.join(" ")}</td></tr>`;
+  }).join("");
+  const cards=`<div class="dash-cards">
+    <div class="card"><div class="stat"><div class="num">${activeStudents().length}</div><div class="lbl">Active trainees</div></div></div>
+    <div class="card"><div class="stat"><div class="num">${pendingAct}</div><div class="lbl">Awaiting activation</div></div></div>
+    <div class="card"><div class="stat"><div class="num" style="color:var(--accent)">${toReview}</div><div class="lbl">Homework to review</div></div></div>
+    <div class="card"><div class="stat"><div class="num" style="color:${overdueTotal?'var(--red)':'var(--green)'}">${overdueTotal}</div><div class="lbl">Overdue items</div></div></div>
+  </div>`;
+  const table=activeStudents().length
+    ? `<div class="dash-wrap"><table class="dash"><thead><tr><th>Trainee</th><th>Track</th><th>Plan</th><th>Homework</th><th>Tasks</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`
+    : '<p class="empty">No active trainees yet.</p>';
+  return `<h2 class="section-title">Progress dashboard</h2>${cards}${table}`;
+}
+
+/* ---------- admin: managers ---------- */
+function vAdmManagers(){
+  if(!store.meta) return needInit();
+  const list=store.managerEmails||[];
+  return `<h2 class="section-title">Managers</h2>
+    <div class="card warn-card">Managers can sign in and view the progress dashboard for all trainees, but cannot add, grade, or change anything. Add a manager’s email here, then have them register on the portal using that same email.</div>
+    <div class="card">
+      <div class="field" style="max-width:420px"><label>Add manager by email</label><input type="email" id="mg-email" placeholder="manager@example.com"></div>
+      <button class="btn" id="mg-add">Add manager</button>
+    </div>
+    ${list.length?list.map(e=>`<div class="card"><div class="row-actions"><strong>${esc(e)}</strong><div class="spacer"></div><button class="btn btn-small btn-danger" data-role="mg-del" data-email="${esc(e)}">Remove</button></div></div>`).join(""):'<p class="empty">No managers added yet.</p>'}`;
+}
+
 /* ---------- writes ---------- */
 async function saveMeta(patch){ store.meta={...store.meta,...patch}; await setDoc(metaRef(),store.meta); }
 async function refreshAdmin(){ await loadAdmin(); render(); }
@@ -502,6 +577,18 @@ function wire(){
     const p=plan().map(m=>m.id===mid?{...m,title,topics}:m); await saveMeta({plan:p}); toast("Module saved"); render(); });
   c.querySelectorAll('[data-role="pm-del"]').forEach(el=>el.onclick=async()=>{ if(!confirm("Delete this module?"))return;
     await saveMeta({plan:plan().filter(m=>m.id!==el.dataset.mid)}); toast("Deleted"); render(); });
+
+  // managers
+  const mgAdd=$("mg-add");
+  if(mgAdd) mgAdd.onclick=async()=>{ const em=$("mg-email").value.trim().toLowerCase();
+    if(!em||em.indexOf("@")<0){ toast("Enter a valid email"); return; }
+    try{ const list=[...new Set([...(store.managerEmails||[]), em])];
+      await setDoc(doc(db,"config","managers"),{emails:list}); store.managerEmails=list; toast("Manager added"); render();
+    }catch(e){ toast(friendly(e)); } };
+  c.querySelectorAll('[data-role="mg-del"]').forEach(el=>el.onclick=async()=>{
+    const list=(store.managerEmails||[]).filter(e=>e!==el.dataset.email);
+    try{ await setDoc(doc(db,"config","managers"),{emails:list}); store.managerEmails=list; toast("Removed"); render(); }
+    catch(e){ toast(friendly(e)); } });
 }
 
 /* ---------- boot ---------- */
@@ -512,6 +599,7 @@ onAuthStateChanged(auth, async u=>{
   $("content").innerHTML='<p class="empty">Loading…</p>';
   try{
     if(isAdminEmail(u.email)){ role="admin"; await loadAdmin(); }
+    else if(await isManagerEmail(u.email)){ role="manager"; await loadAdmin(); }
     else{ await loadStudent(); }
     renderShell();
   }catch(e){
