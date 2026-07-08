@@ -227,7 +227,7 @@ function renderAuth(mode){
         const cred=await createUserWithEmailAndPassword(auth,email,pass);
         const mgr = await isManagerEmail(email).catch(()=>false);
         if(!isAdminEmail(email) && !mgr){
-          await setDoc(doc(db,"students",cred.user.uid),{ name, track:"", startDate:today(), completedModules:[], status:"pending", email });
+          await setDoc(doc(db,"students",cred.user.uid),{ name, startDate:today(), completedModules:[], status:"pending", email });
         }
       }
     }catch(e){ setMsg(friendly(e)); $("au-go").disabled=false; }
@@ -392,11 +392,8 @@ function vAdmStudents(){
         <button class="btn btn-small btn-danger" data-role="del-student" data-sid="${esc(s.id)}">Remove</button></div>`).join("")}</div>`:""}
     ${activeStudents().length?activeStudents().map(s=>{
       const done=s.completedModules||[];
-      return `<div class="card"><h3><span class="who">${avatarHTML(s.name)}${esc(s.name)}</span> ${s.track?`<span class="badge b-blue">${esc(s.track)}</span>`:""}</h3>
+      return `<div class="card"><h3><span class="who">${avatarHTML(s.name)}${esc(s.name)}</span></h3>
         <div class="meta">${esc(s.email||"")} · Started ${fmtDate(s.startDate)}</div>
-        <div class="form-grid">
-          <div class="field"><label>Track</label><input type="text" data-role="stu-track" data-sid="${esc(s.id)}" value="${esc(s.track||"")}" placeholder="Technical Support"></div>
-        </div>
         <div class="field"><label>Completed modules</label><div class="chip-row">
           ${plan().map(m=>`<label><input type="checkbox" data-role="mod" data-sid="${esc(s.id)}" value="${esc(m.id)}" ${done.includes(m.id)?"checked":""}> W${esc(m.week)}: ${esc(m.title)}</label>`).join("")}
         </div></div>
@@ -503,7 +500,6 @@ function vDashboard(){
     if(!flags.length)flags.push(`<span class="badge b-green">On track</span>`);
     return `<tr>
       <td><span class="who">${avatarHTML(s.name)}<strong>${esc(s.name)}</strong></span></td>
-      <td>${esc(s.track||"—")}</td>
       <td><span class="mini-bar"><i style="width:${pct}%"></i></span>${pct}%</td>
       <td>${graded}/${myHw.length}${submitted?` <span class="badge b-blue">${submitted} new</span>`:""}</td>
       <td>${tDone}/${myTasks.length}</td>
@@ -516,7 +512,7 @@ function vDashboard(){
     <div class="card"><div class="stat"><div class="num" style="color:${overdueTotal?'var(--red)':'var(--green)'}">${overdueTotal}</div><div class="lbl">Overdue items</div></div></div>
   </div>`;
   const table=activeStudents().length
-    ? `<div class="dash-wrap"><table class="dash"><thead><tr><th>Trainee</th><th>Track</th><th>Plan</th><th>Homework</th><th>Tasks</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`
+    ? `<div class="dash-wrap"><table class="dash"><thead><tr><th>Trainee</th><th>Plan</th><th>Homework</th><th>Tasks</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`
     : '<p class="empty">No active trainees yet.</p>';
   return `<h2 class="section-title">Progress dashboard</h2>${cards}${table}`;
 }
@@ -557,7 +553,6 @@ function wire(){
   // students admin
   c.querySelectorAll('[data-role="activate"]').forEach(el=>el.onclick=async()=>{ await updateDoc(doc(db,"students",el.dataset.sid),{status:"active"}); toast("Activated"); await refreshAdmin(); });
   c.querySelectorAll('[data-role="del-student"]').forEach(el=>el.onclick=async()=>{ if(!confirm("Remove "+nameOf(el.dataset.sid)+"? Their login stays but their profile/data is deleted.")) return; await deleteDoc(doc(db,"students",el.dataset.sid)); toast("Removed"); await refreshAdmin(); });
-  c.querySelectorAll('[data-role="stu-track"]').forEach(el=>el.onchange=async()=>{ await updateDoc(doc(db,"students",el.dataset.sid),{track:el.value.trim()}); const s=students().find(x=>x.id===el.dataset.sid); if(s)s.track=el.value.trim(); toast("Saved"); });
   c.querySelectorAll('[data-role="mod"]').forEach(el=>el.onchange=async()=>{
     const s=students().find(x=>x.id===el.dataset.sid); const set=new Set(s.completedModules||[]);
     el.checked?set.add(el.value):set.delete(el.value);
