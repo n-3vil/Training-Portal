@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Training Portal</title>
+<style>
+  :root {
+    /* SOTI brand palette (from SOTI 2026 presentation template) */
+    --bg: #f4f7fc;
+    --card: #ffffff;
+    --ink: #292929;
+    --muted: #7c7d81;
+    --accent: #387FE3;
+    --accent-dark: #2872E5;
+    --accent-light: #32B6E9;
+    --accent-soft: #e3edfc;
+    --green: #2C9446;
+    --green-soft: #e4f3e0;
+    --amber: #F36B22;
+    --amber-soft: #fdeadd;
+    --red: #E32822;
+    --red-soft: #fce3e2;
+    --border: #e2e8f0;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI Semilight", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.55;
+  }
+  header {
+    background: linear-gradient(135deg, var(--accent-dark), var(--accent) 55%, var(--accent-light));
+    color: #fff; padding: 28px 20px;
+  }
+  .brand-row { display: flex; align-items: center; gap: 16px; }
+  .brand-row svg { height: 30px; width: auto; flex-shrink: 0; }
+  .brand-sep { width: 1px; height: 34px; background: rgba(255,255,255,.4); }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 4px; }
+  header h1 { font-size: 1.5rem; font-weight: 700; }
+  header p { opacity: .85; font-size: .95rem; margin-top: 4px; }
+  .picker-row {
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 18px;
+  }
+  .picker-row label { font-size: .9rem; opacity: .9; }
+  select {
+    padding: 8px 12px; border-radius: 8px; border: none; font-size: 1rem;
+    background: #fff; color: var(--ink); min-width: 200px; cursor: pointer;
+  }
+  nav {
+    background: var(--card); border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 5;
+  }
+  nav .wrap { display: flex; gap: 4px; }
+  nav button {
+    background: none; border: none; padding: 14px 18px; font-size: .95rem;
+    cursor: pointer; color: var(--muted); border-bottom: 3px solid transparent; font-weight: 600;
+  }
+  nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
+  main { padding: 24px 20px 60px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 18px 20px; margin-bottom: 14px;
+  }
+  .card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+  .meta { font-size: .85rem; color: var(--muted); margin-bottom: 8px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .badge {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-size: .78rem; font-weight: 600;
+  }
+  .b-blue { background: var(--accent-soft); color: var(--accent); }
+  .b-green { background: var(--green-soft); color: var(--green); }
+  .b-amber { background: var(--amber-soft); color: var(--amber); }
+  .b-red { background: var(--red-soft); color: var(--red); }
+  .b-gray { background: #f1f5f9; color: var(--muted); }
+  ul.topics { margin: 8px 0 0 20px; }
+  ul.topics li { margin-bottom: 4px; }
+  .resources { margin-top: 10px; font-size: .9rem; }
+  .resources a { color: var(--accent); text-decoration: none; margin-right: 14px; }
+  .resources a:hover { text-decoration: underline; }
+  .progress-outer {
+    background: #e2e8f0; border-radius: 999px; height: 10px; overflow: hidden; margin-top: 8px;
+  }
+  .progress-inner { background: var(--green); height: 100%; transition: width .4s; }
+  .feedback {
+    background: #f8fafc; border-left: 3px solid var(--accent);
+    padding: 10px 14px; border-radius: 0 8px 8px 0; margin-top: 10px; font-size: .92rem;
+  }
+  .feedback strong { color: var(--accent); }
+  .empty { text-align: center; color: var(--muted); padding: 40px 0; }
+  .section-title { font-size: 1.2rem; margin: 6px 0 16px; }
+  .summary-card { display: flex; gap: 24px; flex-wrap: wrap; }
+  .summary-card .stat { min-width: 120px; }
+  .stat .num { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+  .stat .lbl { font-size: .82rem; color: var(--muted); }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 20px; }
+  @media (max-width: 600px) {
+    nav button { padding: 12px 10px; font-size: .85rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand-row">
+      <!-- SOTI wordmark -->
+      <svg viewBox="0 0 229.6 54.48" xmlns="http://www.w3.org/2000/svg" aria-label="SOTI" role="img"><g fill="#FFFFFF"><path d="M131 8.27C128.56 5.36 126.34 3.96 123.08 2.68 119.7 1.4 113.88 0 103.87 0 93.86 0 87.92 1.28 84.55 2.68 81.17 3.96 79.08 5.36 76.63 8.27 74.07 11.3 71.39 16.88 71.39 27.36 71.39 37.84 74.42 43.66 77.09 46.45 78.6 48.08 81.75 50.29 84.42 51.46 88.03 52.86 94.08 54.37 103.86 54.37 113.64 54.37 119.69 52.86 123.3 51.46 125.98 50.41 129.12 48.2 130.63 46.45 133.19 43.66 136.33 38.3 136.33 27.36 136.21 16.88 133.42 11.3 130.98 8.27ZM120.75 42.26C117.84 45.17 112.95 46.8 103.87 46.8 94.79 46.8 89.9 45.05 86.99 42.26 82.68 38.07 82.33 29.8 82.33 27.13 82.33 19.8 83.84 15.02 86.17 12.23 89.08 8.74 93.15 7.46 103.86 7.46 114.57 7.46 118.64 8.86 121.55 12.23 123.99 15.02 125.39 19.8 125.39 27.13 125.27 29.92 124.92 38.07 120.73 42.26Z"/><path d="M179.54 51.45C179.54 52.5 178.84 52.96 177.79 52.96L171.04 52.96C169.99 52.96 169.41 52.49 169.41 51.45L169.41 8.73C169.41 8.38 169.29 8.15 168.83 8.15L146.48 8.15C145.08 8.15 144.5 7.57 144.5 6.29L144.5 3.03C144.5 1.63 145.08 1.05 146.36 1.05L202.12 1.05C203.52 1.05 203.98 1.63 203.98 3.03L203.98 6.29C203.98 7.69 203.4 8.15 202.12 8.15L180 8.15C179.65 8.15 179.42 8.27 179.42 8.73L179.42 51.45 179.54 51.45Z"/><path d="M219.7 51.45C219.7 52.61 220.28 53.31 221.45 53.31L227.85 53.31C229.01 53.31 229.6 52.73 229.6 51.45L229.6 2.91C229.6 1.75 229.02 1.05 227.85 1.05L221.45 1.05C220.29 1.05 219.7 1.63 219.7 2.91L219.7 51.45Z"/><path d="M53.12 48.66C56.61 45.52 57.31 41.21 57.31 37.83 57.31 34.1 56.03 30.5 53.58 28.17 51.37 25.96 48.69 24.33 42.06 23.28 32.98 21.88 19.01 20.37 16.57 19.67 13.43 18.86 11.22 17.57 10.98 14.43 10.98 14.08 11.1 13.73 11.21 13.27 11.68 11.52 12.84 9.66 16.33 8.61 19.36 7.68 23.31 7.33 29.48 7.33 36.58 7.33 41.24 7.68 50.32 9.08 51.6 9.31 51.72 8.15 51.83 7.45 52.06 6.64 52.18 5.12 52.3 4.31 52.42 2.8 52.18 2.45 51.02 2.1 48.92 1.52 39.5 0 28.67 0 13.31 0 7.83 2.44 5.62 3.96 2.71 5.82 0.73 8.73 0.15 12.81-0.2 15.6 0.03 18.28 1.08 20.49 2.24 23.05 3.99 25.15 9.46 27.36 15.86 29.92 36.47 31.55 39.73 32.25 45.08 33.53 45.9 35.86 46.13 38.3 46.25 39.46 46.36 42.03 43.1 44.12 39.37 46.45 31.23 47.15 27.5 47.03 27.5 47.03 20.86 47.03 14.35 46.33 7.95 45.63 3.76 45.05 2.94 45.05 1.89 45.05 1.43 45.4 1.19 46.8 1.07 47.61 0.96 48.66 0.84 49.83 0.72 51.69 1.07 52.16 3.87 52.62 9.81 53.67 18.89 54.48 26.92 54.48L26.92 54.48C31.81 54.25 46.71 54.36 53.11 48.66Z"/></g></svg>
+      <div class="brand-sep"></div>
+      <h1 id="cohort-name">Training Portal</h1>
+    </div>
+    <p id="instructor-line"></p>
+    <div class="picker-row">
+      <label for="student-select">I am:</label>
+      <select id="student-select"></select>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <button data-tab="overview" class="active">Overview</button>
+    <button data-tab="plan">Training Plan</button>
+    <button data-tab="homework">Homework</button>
+    <button data-tab="tasks">Tasks</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div id="content"><p class="empty">Loading…</p></div>
+</main>
+
+<footer>SOTI Training Portal — content is updated by your instructor. Refresh the page to see the latest.</footer>
+
+<script>
+(async function () {
+  const bust = "?v=" + Date.now();
+  let students, plan, homework, tasks;
+  try {
+    [students, plan, homework, tasks] = await Promise.all([
+      fetch("data/students.json" + bust).then(r => r.json()),
+      fetch("data/plan.json" + bust).then(r => r.json()),
+      fetch("data/homework.json" + bust).then(r => r.json()),
+      fetch("data/tasks.json" + bust).then(r => r.json())
+    ]);
+  } catch (e) {
+    document.getElementById("content").innerHTML =
+      '<p class="empty">Could not load data files. If you opened this file directly from disk, note it must be served over HTTP (GitHub Pages works).</p>';
+    return;
+  }
+
+  document.getElementById("cohort-name").textContent = students.cohortName || "Training Portal";
+  document.getElementById("instructor-line").textContent =
+    students.instructor ? "Instructor: " + students.instructor : "";
+  document.title = students.cohortName || "Training Portal";
+
+  const sel = document.getElementById("student-select");
+  students.students.forEach(s => {
+    const o = document.createElement("option");
+    o.value = s.id; o.textContent = s.name + (s.track ? " — " + s.track : "");
+    sel.appendChild(o);
+  });
+  const saved = localStorage.getItem("student");
+  if (saved && students.students.some(s => s.id === saved)) sel.value = saved;
+
+  let tab = "overview";
+  const me = () => students.students.find(s => s.id === sel.value);
+  const assignedToMe = a => a.assignedTo.includes("all") || a.assignedTo.includes(sel.value);
+  const today = new Date().toISOString().slice(0, 10);
+  const fmtDate = d => d ? new Date(d + "T00:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "";
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  function dueBadge(due, done) {
+    if (!due) return "";
+    if (done) return `<span class="badge b-gray">Due ${fmtDate(due)}</span>`;
+    return due < today
+      ? `<span class="badge b-red">Overdue — was due ${fmtDate(due)}</span>`
+      : `<span class="badge b-blue">Due ${fmtDate(due)}</span>`;
+  }
+
+  function hwStatus(ev) {
+    if (!ev || !ev.status || ev.status === "pending") return { label: "Not submitted", cls: "b-amber", done: false };
+    if (ev.status === "submitted") return { label: "Submitted — awaiting review", cls: "b-blue", done: true };
+    if (ev.status === "graded") return { label: "Graded" + (ev.grade ? ": " + ev.grade : ""), cls: "b-green", done: true };
+    return { label: ev.status, cls: "b-gray", done: false };
+  }
+
+  function renderOverview() {
+    const s = me();
+    const completed = s.completedModules || [];
+    const myHw = homework.homework.filter(assignedToMe);
+    const gradedCount = myHw.filter(h => (h.evaluations[s.id] || {}).status === "graded").length;
+    const myTasks = tasks.tasks.filter(assignedToMe);
+    const openTasks = myTasks.filter(t => (t.status[s.id] || "not-started") !== "done").length;
+    const pct = plan.modules.length ? Math.round(completed.length / plan.modules.length * 100) : 0;
+
+    let recent = "";
+    myHw.forEach(h => {
+      const ev = h.evaluations[s.id];
+      if (ev && ev.status === "graded") {
+        recent += `<div class="feedback"><strong>${esc(h.title)}</strong> — ${esc(ev.grade || "graded")}
+          ${ev.feedback ? "<br>" + esc(ev.feedback) : ""}</div>`;
+      }
+    });
+
+    return `
+      <h2 class="section-title">Welcome, ${esc(s.name.split(" ")[0])}</h2>
+      <div class="card summary-card">
+        <div class="stat"><div class="num">${pct}%</div><div class="lbl">Plan completed</div></div>
+        <div class="stat"><div class="num">${gradedCount}/${myHw.length}</div><div class="lbl">Homework graded</div></div>
+        <div class="stat"><div class="num">${openTasks}</div><div class="lbl">Open tasks</div></div>
+      </div>
+      <div class="card">
+        <h3>Training progress</h3>
+        <div class="meta">${completed.length} of ${plan.modules.length} modules completed</div>
+        <div class="progress-outer"><div class="progress-inner" style="width:${pct}%"></div></div>
+      </div>
+      ${recent ? `<div class="card"><h3>Latest feedback</h3>${recent}</div>` : ""}
+    `;
+  }
+
+  function renderPlan() {
+    const s = me();
+    const completed = s.completedModules || [];
+    return `<h2 class="section-title">${esc(plan.title || "Training Plan")}</h2>` +
+      plan.modules.map(m => {
+        const done = completed.includes(m.id);
+        return `<div class="card">
+          <h3>Week ${m.week}: ${esc(m.title)}
+            ${done ? '<span class="badge b-green">Completed</span>' : '<span class="badge b-gray">Not completed</span>'}
+          </h3>
+          <ul class="topics">${m.topics.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+          ${m.resources && m.resources.length ? `<div class="resources">${m.resources.map(r =>
+            `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label)} ↗</a>`).join("")}</div>` : ""}
+        </div>`;
+      }).join("");
+  }
+
+  function renderHomework() {
+    const s = me();
+    const mine = homework.homework.filter(assignedToMe);
+    if (!mine.length) return '<p class="empty">No homework assigned yet.</p>';
+    return `<h2 class="section-title">Homework</h2>` + mine.map(h => {
+      const ev = h.evaluations[s.id];
+      const st = hwStatus(ev);
+      return `<div class="card">
+        <h3>${esc(h.title)}</h3>
+        <div class="meta">
+          <span class="badge ${st.cls}">${esc(st.label)}</span>
+          ${dueBadge(h.due, st.done)}
+        </div>
+        <p>${esc(h.description)}</p>
+        ${h.submitVia ? `<p class="meta" style="margin-top:8px">How to submit: ${esc(h.submitVia)}</p>` : ""}
+        ${ev && ev.feedback ? `<div class="feedback"><strong>Instructor feedback:</strong> ${esc(ev.feedback)}</div>` : ""}
+      </div>`;
+    }).join("");
+  }
+
+  function renderTasks() {
+    const s = me();
+    const mine = tasks.tasks.filter(assignedToMe);
+    if (!mine.length) return '<p class="empty">No tasks assigned yet.</p>';
+    const badge = { "done": ["Done", "b-green"], "in-progress": ["In progress", "b-blue"], "not-started": ["Not started", "b-amber"] };
+    return `<h2 class="section-title">Tasks</h2>` + mine.map(t => {
+      const st = t.status[s.id] || "not-started";
+      const [lbl, cls] = badge[st] || [st, "b-gray"];
+      return `<div class="card">
+        <h3>${esc(t.title)}</h3>
+        <div class="meta">
+          <span class="badge ${cls}">${lbl}</span>
+          ${dueBadge(t.due, st === "done")}
+        </div>
+        <p>${esc(t.description)}</p>
+      </div>`;
+    }).join("");
+  }
+
+  function render() {
+    const views = { overview: renderOverview, plan: renderPlan, homework: renderHomework, tasks: renderTasks };
+    document.getElementById("content").innerHTML = views[tab]();
+  }
+
+  document.querySelectorAll("nav button").forEach(b => b.addEventListener("click", () => {
+    tab = b.dataset.tab;
+    document.querySelectorAll("nav button").forEach(x => x.classList.toggle("active", x === b));
+    render();
+  }));
+  sel.addEventListener("change", () => { localStorage.setItem("student", sel.value); render(); });
+
+  render();
+})();
+</script>
+</body>
+</html>

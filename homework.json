@@ -1,0 +1,43 @@
+{
+  "homework": [
+    {
+      "id": "hw1",
+      "title": "Set up your workstation and document it",
+      "module": "m1",
+      "assignedTo": ["all"],
+      "due": "2026-07-10",
+      "description": "Install the required tools (ticketing client, VPN, password manager). Write a short document listing each tool, its version, and one problem you hit during setup and how you solved it.",
+      "submitVia": "Email the document to your instructor.",
+      "evaluations": {
+        "alex": {
+          "status": "graded",
+          "grade": "9/10",
+          "feedback": "Well documented. Next time include screenshots of the VPN config."
+        },
+        "sam": {
+          "status": "submitted"
+        }
+      }
+    },
+    {
+      "id": "hw2",
+      "title": "Write 3 bug reports from the demo app",
+      "module": "m3",
+      "assignedTo": ["sam"],
+      "due": "2026-07-20",
+      "description": "Explore the demo application and find at least 3 bugs. Write a reproducible bug report for each using the template: title, steps to reproduce, expected result, actual result, severity.",
+      "submitVia": "Email the reports to your instructor.",
+      "evaluations": {}
+    },
+    {
+      "id": "hw3",
+      "title": "Resolve 5 practice tickets",
+      "module": "m2",
+      "assignedTo": ["alex"],
+      "due": "2026-07-17",
+      "description": "Work through the 5 practice tickets in the training queue. For each, write the resolution steps and the customer-facing reply.",
+      "submitVia": "Mark the tickets resolved in the training queue.",
+      "evaluations": {}
+    }
+  ]
+}

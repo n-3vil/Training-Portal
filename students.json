@@ -1,0 +1,21 @@
+{
+  "cohortName": "SOTI IT Support & QA Onboarding",
+  "instructor": "Nevil",
+  "instructorEmail": "emmanuelnevill@gmail.com",
+  "students": [
+    {
+      "id": "alex",
+      "name": "Alex Demo",
+      "track": "IT Support",
+      "startDate": "2026-07-06",
+      "completedModules": ["m1"]
+    },
+    {
+      "id": "sam",
+      "name": "Sam Example",
+      "track": "QA",
+      "startDate": "2026-07-06",
+      "completedModules": []
+    }
+  ]
+}
