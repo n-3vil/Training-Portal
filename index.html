@@ -114,6 +114,12 @@
   .mini-bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#3fbf5e)}
   .dash-cards{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px}
   .dash-cards .card{flex:1;min-width:155px;margin-bottom:0}
+  .plan-day-head h3{font-size:1.16rem;letter-spacing:-.01em}
+  .plan-sec{margin-top:16px}
+  .plan-sec-title{font-weight:700;color:var(--accent-dark);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border);padding-bottom:7px;margin-bottom:11px}
+  .plan-topic{margin:10px 0 14px;padding-left:2px}
+  .plan-topic-name{font-weight:600;color:var(--ink);margin-bottom:2px}
+  .ref-tag{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.78rem;padding:4px 10px;border-radius:8px}
   @media(max-width:640px){.form-grid{grid-template-columns:1fr}.eval-row{grid-template-columns:1fr 1fr}header h1{font-size:1.2rem}.section-title{font-size:1.15rem}}
 </style>
 </head>
@@ -175,12 +181,8 @@ let user = null, role = null;   // role: "admin" | "student" | "pending"
 let tab = null;
 const store = {};               // loaded data
 
-const DEFAULT_PLAN = [
-  { id:"m1", week:1, title:"Orientation & Tooling", topics:["Team introductions, accounts and access setup","Ticketing system basics","Communication channels and escalation paths","Overview of our products and environments"], resources:[] },
-  { id:"m2", week:2, title:"Technical Support Fundamentals", topics:["Troubleshooting methodology: reproduce, isolate, resolve","Common OS and network issues","Password resets, account lockouts, permissions","Writing clear ticket notes and customer updates"], resources:[] },
-  { id:"m3", week:3, title:"Product Deep-Dive", topics:["Core product areas and common customer questions","Reading logs and diagnostics","Known issues and workarounds"], resources:[] },
-  { id:"m4", week:4, title:"Real Tickets & Shadowing", topics:["Shadow senior staff on live tickets","Handle first tickets with review","Final evaluation and feedback session"], resources:[] }
-];
+const SOTI_PLAN = [{"day": 1, "date": "2026-07-20", "sections": [{"content": "Orientation & Mobility Basics", "topics": [{"t": "Introduction to Mobility Management", "subs": ["Introduction to SOTI & SOTI One Service including (MDM, EMM, UEM)", "Introduction to Mobile Device Management", "Introduction to Mobile Platforms"], "refs": ["Introduction to SOTI & MobiControl (MDM, EMM, UEM)", "Introduction to Mobile Device Management", "Introduction to Mobile Platforms"]}]}, {"content": "Infrastructure & Networking", "topics": [{"t": "Infrastructure", "subs": ["Windows Servers, AD, DNS, overview of DNS Records and Zones, DHCP, Certificates, MMC, IIS"]}, {"t": "Networking", "subs": ["LAN, WAN, DMZ, NAT, TCP, TLS, HTTPS, FTP, SFTP, SSL, URL, FQDN, Hostname, Proxy, Firewall, Load Balancer, Private IP, Public IP, MAC, Ports, Services"]}]}], "id": "d1", "title": "Orientation & Mobility Basics · Infrastructure & Networking"}, {"day": 2, "date": "2026-07-21", "sections": [{"content": "SOTI Products Overview", "topics": [{"t": "Introduction to SOTI MobiControl", "subs": ["Introduction to SOTI MobiControl and explain how it addresses the requirements of Enterprise Mobility Management."], "refs": ["Introduction to SOTI ONE Platform"]}, {"t": "Introduction to SOTI Identity", "subs": ["Introduction to SOTI Identity and how it addresses the requirements of Identity and Access Management."]}, {"t": "Introduction to SOTI Xsight / Assist", "subs": ["Explain how it integrates with SOTI MobiControl, providing a supercharged solution with the operational intelligence, support and management tools that customers need to streamline their business."]}, {"t": "Introduction to SOTI Snap", "subs": ["Explain how it helps organizations build the mobile apps they need quickly and cost-effectively, without the need for specialized resources."]}, {"t": "Introduction to SOTI Connect", "subs": ["Explain how it empowers organizations to effectively manage and gain visibility into the diverse and numerous IoT-enabled devices throughout their operations, while reducing the total cost of ownership (TCO)."]}, {"t": "Introduction to OneLogin and its components", "subs": ["All tool overview"]}]}, {"content": "OneLogin Overview and VM Portal", "topics": [{"t": "Setup VM for Training and installation", "subs": ["VM Request based on Requirement and MC installation along with all service introduction"]}]}], "id": "d2", "title": "SOTI Products Overview · OneLogin Overview and VM Portal"}, {"day": 3, "date": "2026-07-22", "sections": [{"content": "MobiControl Overview", "topics": [{"t": "Introduction to SOTI MobiControl", "subs": ["Console Walkthrough - Menu, Dashboard, Legacy UI, User Profile"]}, {"t": "MobiControl System Health & Analysis Dashboard", "subs": ["Overview of System Health & Analysis Dashboard"]}, {"t": "MobiControl Search / SOTI Search", "subs": ["SOTI Search"]}]}], "id": "d3", "title": "MobiControl Overview"}, {"day": 4, "date": "2026-07-23", "sections": [{"content": "Android", "topics": [{"t": "Enrollment Policy", "subs": ["Add device rule & advanced configurations"], "refs": ["Android Device Management"]}, {"t": "Device Enrolment Method", "subs": ["QR, AE, Classic, NFC, ZTE, KNOX"]}, {"t": "Device Management", "subs": ["Explaining all AE, AC, COPE, BYOD"], "refs": ["Android Enterprise"]}, {"t": "Device Configurations", "subs": ["Profile Payloads & App deployments overview"]}, {"t": "Android Device Scripts", "subs": ["Device details, Location, Apps, Certificates, Logs tab"]}]}], "id": "d4", "title": "Android"}, {"day": 5, "date": "2026-07-24", "sections": [{"content": "Android Policies Management", "topics": [{"t": "Signal Policy", "subs": ["Alerts Rule"]}, {"t": "Data Collection Policy", "subs": ["Data Collection Rule"]}, {"t": "File Sync Policy", "subs": ["File Sync Rule"]}, {"t": "Apps", "subs": ["Application Catalogue Rule"], "refs": ["Application Deployment"]}, {"t": "TEM Rule", "subs": ["TEM Rules & its limitations"]}]}], "id": "d5", "title": "Android Policies Management"}, {"day": 6, "date": "2026-07-27", "sections": [{"content": "Android Profiles, Packages & Policies", "topics": [{"t": "Profiles", "subs": ["Overview"], "refs": ["Policy Management"]}, {"t": "Classic Payloads Vs Enterprise", "subs": ["Difference between Android Classic/Enterprise payloads"]}, {"t": "Compliance Policies", "subs": ["Compliance policy use cases and how it works"]}, {"t": "Package Deployment", "subs": ["Package Studio and its features, direct apk upload"]}]}], "id": "d6", "title": "Android Profiles, Packages & Policies"}, {"day": 7, "date": "2026-07-28", "sections": [{"content": "Content, Shared Device & API", "topics": [{"t": "Content Management", "subs": ["Content Library"], "refs": ["Content Library"]}, {"t": "Shared Device", "subs": ["Configuring Shared device and its use cases"]}, {"t": "MobiControl API", "subs": ["Generating Client ID & Client Secret, Swagger UI, Making API Calls"]}]}], "id": "d7", "title": "Content, Shared Device & API"}, {"day": 8, "date": "2026-07-29", "sections": [{"content": "iOS", "topics": [{"t": "APNS Configurations", "subs": ["Why APNS and how to configure it?"], "refs": ["iOS Enrollment"]}, {"t": "iOS Device enrolment", "subs": ["Different Enrollment Types"]}, {"t": "Profiles & Policies", "subs": ["Shared device login"]}, {"t": "iOS App Deployment", "subs": ["Enterprise Apps & App Store Apps"], "refs": ["iOS Application Deployment"]}, {"t": "DEP Management", "subs": ["Explain why DEP and how it works"], "refs": ["Device Enrollment Program"]}, {"t": "VPP Management", "subs": ["Explain why VPP and how it works"], "refs": ["iOS Application Deployment"]}, {"t": "Report Management", "subs": ["Schedule Reports, Platform based reports, different formats"]}, {"t": "Console Security Setting", "subs": ["Managing Users, Groups, & Device Group Permissions"]}]}], "id": "d8", "title": "iOS"}, {"day": 9, "date": "2026-07-30", "sections": [{"content": "Windows", "topics": [{"t": "Windows Desktop Enrolment", "subs": ["Different Enrollment Types & How to enroll it"], "refs": ["Windows Device Enrollment"]}, {"t": "Windows Modern Enrollment", "subs": ["Different Enrollment Types & How to enroll it"]}, {"t": "Windows CE Enrolment", "subs": ["Different Enrollment Types & How to enroll it"]}, {"t": "Windows Classic/Modern profiles", "subs": ["Profile Payloads & App deployments overview"]}]}, {"content": "Architecture, Installation & Upgrade", "topics": [{"t": "Components", "subs": ["SQL Database", "Management Server & Assist (legacy)", "Deployment Server, MS server and other service workflow", "Device Agent", "SOTI Services"]}, {"t": "Installation", "subs": ["Hardware, Software & Network Requirements", "Installation Process - Explanation on every step (What & Why?)", "MCAU - DMA, PAA, SAA, MSA, Certificates"], "refs": ["Installation Lab"]}, {"t": "Upgrade", "subs": ["Upgrade process"]}, {"t": "Workflow", "subs": ["Communication flow between all the components (AE, APNS, DS, MS, DB, Agent, LDAP, CLA, CA, ERG, PAS, iOS, Windows Modern)"], "refs": ["SOTI MobiControl Workflow"]}]}], "id": "d9", "title": "Windows · Architecture, Installation & Upgrade"}, {"day": 10, "date": "2026-07-31", "sections": [{"content": "Integrations", "topics": [{"t": "LDAP, Certificate Authority, Identity Provider, SMTP, Email Server, Global Proxy", "subs": ["Quick overview and understanding of supported & third party integrations with SOTI ONE products. Professional Services involvement with these integrations."]}]}, {"content": "Other Components Basic Overview", "topics": [{"t": "Cloud Link Agent", "subs": ["What & Why CLA? Evolution of CLA (v1 to v4)"]}, {"t": "Enterprise Resource Gateway", "subs": ["What & Why ERG? How to configure it?"]}, {"t": "Xtreme Hub", "subs": ["What & Why Xtreme Hub"]}, {"t": "SOTI Surf", "subs": ["How to deploy SOTI Surf & its features"]}, {"t": "SOTI Hub", "subs": ["How to deploy SOTI Hub & its features"]}, {"t": "PAS", "subs": ["Explain what is PAS and its enrollment process"]}]}, {"content": "Troubleshooting", "topics": [{"t": "Logs and Alerts", "subs": ["Server Side & Device Side logs"]}, {"t": "Troubleshooting tools", "subs": ["Notepad++, SQL Lite, SQL Trace, Wireshark, Adb"]}]}, {"content": "MobiControl Database", "topics": [{"t": "MobiControl DB", "subs": ["Purpose of MobiControl Database", "Data stored (devices, users, policies, jobs, logs)", "Relationship with MobiControl services", "On-Prem vs Cloud DB ownership (customer vs SOTI)", "When support needs DB validation", "Read-only vs write operations (support limitations)", "Support Use: Devices not syncing data", "Jobs stuck in pending state", "Console performance issues"]}, {"t": "Archive DB", "subs": ["What is Archive DB and why it is used", "Difference between Primary DB and Archive DB", "Data types archived (logs, historical records)", "Archive schedule and retention policy", "Impact of large Archive DB on performance", "Support Use Case: Large DB size complaints", "Slow reports and console loading", "Compliance & data retention queries"]}, {"t": "Tables", "subs": ["Types of tables used in MobiControl", "Device-related tables", "User & group tables", "Job & command tables"]}, {"t": "Stored Procedures", "subs": ["How MobiControl uses stored procedures for: Data processing, Cleanup jobs, Reporting"]}, {"t": "Truncating logs", "subs": ["What are database logs", "Difference between Application logs and SQL transaction logs", "When log truncation is required", "Risks of improper truncation", "Recommended best practices"]}, {"t": "Backup & Restore Database", "subs": ["Pre-upgrade backup requirement", "Support Use Case", "Failed upgrades", "Accidental data loss", "Server migration assistance"]}]}], "id": "d10", "title": "Integrations · Other Components Basic Overview · Troubleshooting · MobiControl Database"}, {"day": 11, "date": "2026-08-03", "sections": [{"content": "Xsight Installation and Overview", "topics": [{"t": "Introduction to SOTI XSight", "subs": ["Installation", "Setting Up SOTI Xsight", "Using Stella", "Operational Intelligence", "Live View", "Watchlists", "Incident Management", "Live Support", "Managing Shared Topic bundles", "Manage Agent Permissions", "Generating the SOTI XSight Agent", "Sync MobiControl Info", "Roles and Permissions", "Using the Self Service Portal", "Diagnostics and Remote Control", "Using the SOTI XSight Administration Utility"], "refs": ["SOTI XSight Help"]}]}], "id": "d11", "title": "Xsight Installation and Overview"}, {"day": 12, "date": "2026-08-04", "sections": [{"content": "Xsight KB Articles", "topics": [{"t": "Xsight KB Articles", "subs": ["Xsight KB Articles"], "refs": ["Xsight KB Articles"]}]}], "id": "d12", "title": "Xsight KB Articles"}, {"day": 13, "date": "2026-08-05", "sections": [{"content": "Salesforce Overview", "topics": [{"t": "Salesforce", "subs": ["Accounts, Reports, Cases, Assets, Opportunities"], "refs": ["Salesforce"]}]}, {"content": "SOTI Identity", "topics": [{"t": "SOTI Identity", "subs": ["User Management", "Application Management", "LDAP and IdP Management", "Policy Management", "SOTI Identity Account Settings", "Preferences", "Advanced Configuration", "SOTI Cloud Link Agent"], "refs": ["SOTI Identity Help", "Identity KB Articles", "Identity Release Notes"]}]}], "id": "d13", "title": "Salesforce Overview · SOTI Identity"}, {"day": 14, "date": "2026-08-06", "sections": [{"content": "Other Troubleshooting Tool", "topics": [{"t": "Customer Manager", "subs": ["What information can be retrieved using Customer Manager.", "Details and use cases on customers, customer product, orders, downloads, license instance transaction, reports etc."]}]}, {"content": "Customer End Access and Portal Overview", "topics": [{"t": "Customer Portal (Premium Onboarding)", "subs": ["Customer Portal Overview", "Purpose of the Customer Portal", "Target users (IT Admins, Project Managers, Partners)", "Difference between Standard Support vs Premium Onboarding", "Portal access requirements"]}]}, {"content": "CMS Overview and Deep Introduction", "topics": [{"t": "CMS walk-through", "subs": ["CMS overview and run job and required information, Backup, Server resize"]}]}, {"content": "Cloud Alert Project and Overview", "topics": [{"t": "Cloud Alerts", "subs": ["Cloud Alerts Process and Guidebook"]}]}, {"content": "Operations", "topics": [{"t": "Ring General configure (Call queue)"}, {"t": "JIRA"}, {"t": "Help Tool", "subs": ["SOTI MobiControl 2026.0 Help"], "refs": ["MobiControl Help"]}, {"t": "SOTI Pulse", "refs": ["SOTI Central Review"]}, {"t": "Help File", "subs": ["SOTI MobiControl KB Articles"], "refs": ["MobiControl KB Articles"]}, {"t": "Case transfer and other processes"}, {"t": "Support calendars"}, {"t": "Queue coverage schedule"}, {"t": "Addition to Teams group"}, {"t": "Mock Call Debrief (Call flow and scripts + QA template review) — Trainer: Himanshi Khatri"}, {"t": "SLAs", "subs": ["Response Time: Time to acknowledge or first reply to a case.", "Resolution Time: Time to fully resolve the issue.", "Priority / Severity Levels: Determines how fast we must act.", "Business Hours vs 24/7 Support: SLAs apply based on defined hours.", "Customer vs Internal SLA: Some SLAs are customer-facing, others internal."]}, {"t": "Technical Support Handbook"}, {"t": "Understand NPS", "subs": ["NPS measures customer experience, not just issue resolution", "Every support interaction can impact NPS", "Customers rate how likely they are to recommend SOTI"], "refs": ["SLA_NPS_Checklist_Technical_Support_v1.docx"]}]}], "id": "d14", "title": "Other Troubleshooting Tool · Customer End Access and Portal Overview · CMS Overview and Deep Introduction · Cloud Alert Project and Overview · Operations"}, {"day": 15, "date": "2026-08-07", "sections": [{"content": "Questions and Answers", "topics": [{"t": "Open Q&A session", "subs": ["Recap and clarify doubts from the full program"]}]}], "id": "d15", "title": "Questions and Answers"}];
+const DEFAULT_PLAN = SOTI_PLAN;
 
 /* ---------- Firestore helpers ---------- */
 const metaRef = () => doc(db,"config","meta");
@@ -322,18 +324,31 @@ function vOverview(){
       <div class="stat"><div class="num">${open}</div><div class="lbl">Open tasks</div></div>
     </div>
     <div class="card"><h3>Training progress</h3>
-      <div class="meta">${completed.length} of ${plan().length} modules completed</div>
+      <div class="meta">${completed.length} of ${plan().length} days completed</div>
       <div class="progress-outer"><div class="progress-inner" style="width:${pct}%"></div></div></div>
     ${recent?`<div class="card"><h3>Latest feedback</h3>${recent}</div>`:""}`;
 }
 function vPlan(){
-  const completed=store.me.completedModules||[];
+  const completed=(store.me&&store.me.completedModules)||[];
   if(!plan().length) return '<p class="empty">The training plan hasn’t been set up yet.</p>';
-  return `<h2 class="section-title">Training Plan</h2>`+plan().map(m=>`<div class="card">
-    <h3>Week ${esc(m.week)}: ${esc(m.title)} ${completed.includes(m.id)?'<span class="badge b-green">Completed</span>':'<span class="badge b-gray">Not completed</span>'}</h3>
-    <ul class="topics">${(m.topics||[]).map(t=>`<li>${esc(t)}</li>`).join("")}</ul>
-    ${(m.resources&&m.resources.length)?`<div class="resources">${m.resources.map(r=>`<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label)} ↗</a>`).join("")}</div>`:""}
-  </div>`).join("");
+  const dayCard=m=>{
+    const done=completed.includes(m.id);
+    const secs=(m.sections||[]).map(sec=>`
+      <div class="plan-sec">
+        <div class="plan-sec-title">${esc(sec.content)}</div>
+        ${(sec.topics||[]).map(tp=>`
+          <div class="plan-topic">
+            <div class="plan-topic-name">${esc(tp.t)}</div>
+            ${(tp.subs&&tp.subs.length)?`<ul class="topics">${tp.subs.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+            ${(tp.refs&&tp.refs.length)?`<div class="resources">${tp.refs.map(r=>`<span class="ref-tag">🔗 ${esc(r)}</span>`).join("")}</div>`:""}
+          </div>`).join("")}
+      </div>`).join("");
+    return `<div class="card plan-day"><div class="plan-day-head">
+      <h3>Day ${esc(m.day)} — ${esc(m.title)}</h3>
+      <div class="meta">${fmtDate(m.date)} ${done?'<span class="badge b-green">Completed</span>':'<span class="badge b-gray">Not completed</span>'}</div>
+      </div>${secs}</div>`;
+  };
+  return `<h2 class="section-title">Training Plan</h2>`+plan().map(dayCard).join("");
 }
 function vHomework(){
   const mine=store.homework.filter(h=>assignedTo(h,user.uid));
@@ -395,7 +410,7 @@ function vAdmStudents(){
       return `<div class="card"><h3><span class="who">${avatarHTML(s.name)}${esc(s.name)}</span></h3>
         <div class="meta">${esc(s.email||"")} · Started ${fmtDate(s.startDate)}</div>
         <div class="field"><label>Completed modules</label><div class="chip-row">
-          ${plan().map(m=>`<label><input type="checkbox" data-role="mod" data-sid="${esc(s.id)}" value="${esc(m.id)}" ${done.includes(m.id)?"checked":""}> W${esc(m.week)}: ${esc(m.title)}</label>`).join("")}
+          ${plan().map(m=>`<label><input type="checkbox" data-role="mod" data-sid="${esc(s.id)}" value="${esc(m.id)}" ${done.includes(m.id)?"checked":""}> Day ${esc(m.day)}${m.title?": "+esc(m.title.length>40?m.title.slice(0,40)+"\u2026":m.title):""}</label>`).join("")}
         </div></div>
         <div class="row-actions"><button class="btn btn-small btn-danger" data-role="del-student" data-sid="${esc(s.id)}">Remove student</button></div>
       </div>`;
@@ -457,19 +472,16 @@ function vAdmTasks(){
 /* ---------- admin: plan editor ---------- */
 function vAdmPlan(){
   if(!store.meta) return needInit();
+  const loaded=plan().length;
+  const dayBlocks=plan().map(m=>`<div class="card"><h3>Day ${esc(m.day)} — ${esc(m.title)}</h3>
+    <div class="meta">${fmtDate(m.date)} · ${(m.sections||[]).reduce((a,sec)=>a+(sec.topics||[]).length,0)} topics</div>
+    ${(m.sections||[]).map(sec=>`<div class="plan-sec"><div class="plan-sec-title">${esc(sec.content)}</div><ul class="topics">${(sec.topics||[]).map(tp=>`<li>${esc(tp.t)}</li>`).join("")}</ul></div>`).join("")}
+    <div class="row-actions"><button class="btn btn-small btn-danger" data-role="del-day" data-mid="${esc(m.id)}">Delete day</button></div></div>`).join("");
   return `<h2 class="section-title">Training Plan</h2>
     <div class="field" style="max-width:460px"><label>Cohort name</label><input type="text" id="cohort-edit" value="${esc(store.meta.cohortName||"")}"><button class="btn btn-small" id="cohort-save" style="margin-top:8px">Save name</button></div>
-    <details class="adder"><summary>+ Add a module</summary><div class="card">
-      <div class="form-grid">
-        <div class="field"><label>Week number</label><input type="number" id="nm-week" value="${plan().length+1}"></div>
-        <div class="field"><label>Title</label><input type="text" id="nm-title"></div>
-        <div class="field full"><label>Topics (one per line)</label><textarea id="nm-topics"></textarea></div>
-      </div><button class="btn" id="nm-add">Add module</button></div></details>
-    ${plan().map(m=>`<div class="card"><h3>Week ${esc(m.week)}: ${esc(m.title)}</h3>
-      <div class="field"><label>Title</label><input type="text" data-role="pm-title" data-mid="${esc(m.id)}" value="${esc(m.title)}"></div>
-      <div class="field"><label>Topics (one per line)</label><textarea class="topic-edit" data-role="pm-topics" data-mid="${esc(m.id)}">${esc((m.topics||[]).join("\n"))}</textarea></div>
-      <div class="row-actions"><button class="btn btn-small" data-role="pm-save" data-mid="${esc(m.id)}">Save module</button>
-        <button class="btn btn-small btn-danger" data-role="pm-del" data-mid="${esc(m.id)}">Delete module</button></div></div>`).join("")}`;
+    <div class="card warn-card">The full SOTI training plan (${SOTI_PLAN.length} days, built in) can be loaded with one click — this replaces the current plan for everyone. Per-student completion is on the Students tab.
+      <div class="row-actions"><button class="btn" id="load-plan">${loaded?"Reload / reset to full SOTI plan":"Load the full SOTI training plan"}</button></div></div>
+    ${loaded?dayBlocks:'<p class="empty">No plan loaded yet — click the button above.</p>'}`;
 }
 function needInit(){ return `<div class="card warn-card"><h3>Finish setup first</h3><p>Go to the <strong>Students</strong> tab and click “Initialize portal”.</p></div>`; }
 
@@ -585,15 +597,10 @@ function wire(){
   // plan editor
   const cSave=$("cohort-save");
   if(cSave) cSave.onclick=async()=>{ await saveMeta({cohortName:$("cohort-edit").value.trim()}); $("cohort-name").textContent=store.meta.cohortName; toast("Saved"); };
-  const nmAdd=$("nm-add");
-  if(nmAdd) nmAdd.onclick=async()=>{ const t=$("nm-title").value.trim(); if(!t){toast("Title required");return;}
-    const p=[...plan(),{ id:"m"+Date.now().toString(36), week:parseInt($("nm-week").value)||plan().length+1, title:t, topics:$("nm-topics").value.split("\n").map(x=>x.trim()).filter(Boolean), resources:[] }];
-    await saveMeta({plan:p}); toast("Module added"); render(); };
-  c.querySelectorAll('[data-role="pm-save"]').forEach(el=>el.onclick=async()=>{ const mid=el.dataset.mid;
-    const title=c.querySelector(`[data-role="pm-title"][data-mid="${mid}"]`).value.trim();
-    const topics=c.querySelector(`[data-role="pm-topics"][data-mid="${mid}"]`).value.split("\n").map(x=>x.trim()).filter(Boolean);
-    const p=plan().map(m=>m.id===mid?{...m,title,topics}:m); await saveMeta({plan:p}); toast("Module saved"); render(); });
-  c.querySelectorAll('[data-role="pm-del"]').forEach(el=>el.onclick=async()=>{ if(!confirm("Delete this module?"))return;
+  const loadPlan=$("load-plan");
+  if(loadPlan) loadPlan.onclick=async()=>{ if(!confirm("Load the full SOTI plan? This replaces the current training plan for all trainees."))return;
+    try{ await saveMeta({plan:JSON.parse(JSON.stringify(SOTI_PLAN))}); toast("SOTI training plan loaded"); render(); }catch(e){ toast(friendly(e)); } };
+  c.querySelectorAll('[data-role="del-day"]').forEach(el=>el.onclick=async()=>{ if(!confirm("Delete this day?"))return;
     await saveMeta({plan:plan().filter(m=>m.id!==el.dataset.mid)}); toast("Deleted"); render(); });
 
   // managers
