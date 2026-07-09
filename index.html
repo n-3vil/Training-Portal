@@ -249,7 +249,7 @@ function friendly(e){
 /* ---------- shell ---------- */
 const STUDENT_TABS=[["overview","Overview"],["plan","Training Plan"],["homework","Homework"],["tasks","Tasks"]];
 const ADMIN_TABS=[["a-dashboard","Dashboard"],["a-students","Students"],["a-homework","Homework"],["a-tasks","Tasks"],["a-plan","Training Plan"],["a-managers","Managers"]];
-const MANAGER_TABS=[["a-dashboard","Dashboard"]];
+const MANAGER_TABS=[["a-dashboard","Dashboard"],["m-plan","Training Plan"]];
 function renderShell(){
   $("cohort-name").textContent = (store.meta&&store.meta.cohortName) || "Training Portal";
   document.title = (store.meta&&store.meta.cohortName) || "SOTI Training Portal";
@@ -274,7 +274,7 @@ function renderPending(){
 }
 function render(){
   const v={overview:vOverview,plan:vPlan,homework:vHomework,tasks:vTasks,
-    "a-dashboard":vDashboard,"a-managers":vAdmManagers,
+    "a-dashboard":vDashboard,"a-managers":vAdmManagers,"m-plan":vManagerPlan,
     "a-students":vAdmStudents,"a-homework":vAdmHomework,"a-tasks":vAdmTasks,"a-plan":vAdmPlan};
   $("content").innerHTML=v[tab](); wire();
 }
@@ -328,27 +328,23 @@ function vOverview(){
       <div class="progress-outer"><div class="progress-inner" style="width:${pct}%"></div></div></div>
     ${recent?`<div class="card"><h3>Latest feedback</h3>${recent}</div>`:""}`;
 }
+function planDayCard(m, completed, showBadge){
+  const done=(completed||[]).includes(m.id);
+  const secs=(m.sections||[]).map(sec=>`
+    <div class="plan-sec"><div class="plan-sec-title">${esc(sec.content)}</div>
+      ${(sec.topics||[]).map(tp=>`<div class="plan-topic"><div class="plan-topic-name">${esc(tp.t)}</div>${(tp.subs&&tp.subs.length)?`<ul class="topics">${tp.subs.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}</div>`).join("")}
+    </div>`).join("");
+  const badge = showBadge ? (done?'<span class="badge b-green">Completed</span>':'<span class="badge b-gray">Not completed</span>') : "";
+  return `<div class="card plan-day"><div class="plan-day-head"><h3>Day ${esc(m.day)} — ${esc(m.title)}</h3><div class="meta">${fmtDate(m.date)} ${badge}</div></div>${secs}</div>`;
+}
 function vPlan(){
-  const completed=(store.me&&store.me.completedModules)||[];
   if(!plan().length) return '<p class="empty">The training plan hasn’t been set up yet.</p>';
-  const dayCard=m=>{
-    const done=completed.includes(m.id);
-    const secs=(m.sections||[]).map(sec=>`
-      <div class="plan-sec">
-        <div class="plan-sec-title">${esc(sec.content)}</div>
-        ${(sec.topics||[]).map(tp=>`
-          <div class="plan-topic">
-            <div class="plan-topic-name">${esc(tp.t)}</div>
-            ${(tp.subs&&tp.subs.length)?`<ul class="topics">${tp.subs.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
-            ${(tp.refs&&tp.refs.length)?`<div class="resources">${tp.refs.map(r=>`<span class="ref-tag">🔗 ${esc(r)}</span>`).join("")}</div>`:""}
-          </div>`).join("")}
-      </div>`).join("");
-    return `<div class="card plan-day"><div class="plan-day-head">
-      <h3>Day ${esc(m.day)} — ${esc(m.title)}</h3>
-      <div class="meta">${fmtDate(m.date)} ${done?'<span class="badge b-green">Completed</span>':'<span class="badge b-gray">Not completed</span>'}</div>
-      </div>${secs}</div>`;
-  };
-  return `<h2 class="section-title">Training Plan</h2>`+plan().map(dayCard).join("");
+  const completed=(store.me&&store.me.completedModules)||[];
+  return `<h2 class="section-title">Training Plan</h2>`+plan().map(m=>planDayCard(m,completed,true)).join("");
+}
+function vManagerPlan(){
+  if(!plan().length) return '<p class="empty">The training plan hasn’t been set up yet.</p>';
+  return `<h2 class="section-title">Training Plan</h2>`+plan().map(m=>planDayCard(m,[],false)).join("");
 }
 function vHomework(){
   const mine=store.homework.filter(h=>assignedTo(h,user.uid));
@@ -479,8 +475,9 @@ function vAdmPlan(){
     <div class="row-actions"><button class="btn btn-small btn-danger" data-role="del-day" data-mid="${esc(m.id)}">Delete day</button></div></div>`).join("");
   return `<h2 class="section-title">Training Plan</h2>
     <div class="field" style="max-width:460px"><label>Cohort name</label><input type="text" id="cohort-edit" value="${esc(store.meta.cohortName||"")}"><button class="btn btn-small" id="cohort-save" style="margin-top:8px">Save name</button></div>
-    <div class="card warn-card">The full SOTI training plan (${SOTI_PLAN.length} days, built in) can be loaded with one click — this replaces the current plan for everyone. Per-student completion is on the Students tab.
-      <div class="row-actions"><button class="btn" id="load-plan">${loaded?"Reload / reset to full SOTI plan":"Load the full SOTI training plan"}</button></div></div>
+    ${loaded
+      ? `<div class="meta" style="margin:2px 0 16px">Per-student completion is on the Students tab.<button class="btn btn-small btn-danger" id="load-plan" style="margin-left:10px">Reset plan to built-in default</button></div>`
+      : `<div class="card warn-card">The full SOTI training plan (${SOTI_PLAN.length} days) is built in. Click to load it — this sets the plan for everyone.<div class="row-actions"><button class="btn" id="load-plan">Load the full SOTI training plan</button></div></div>`}
     ${loaded?dayBlocks:'<p class="empty">No plan loaded yet — click the button above.</p>'}`;
 }
 function needInit(){ return `<div class="card warn-card"><h3>Finish setup first</h3><p>Go to the <strong>Students</strong> tab and click “Initialize portal”.</p></div>`; }
@@ -490,21 +487,20 @@ function vDashboard(){
   if(!store.meta) return role==="manager"
     ? '<p class="empty">The portal isn’t set up yet. Please check back once your instructor has initialized it.</p>'
     : needInit();
-  const P=plan().length;
+  const P=plan().length||1;
+  const studs=activeStudents();
   const pendingAct=students().filter(s=>s.status!=="active").length;
-  let toReview=0, overdueTotal=0;
-  const rows=activeStudents().map(s=>{
-    const done=(s.completedModules||[]).length, pct=P?Math.round(done/P*100):0;
+  let toReview=0, overdueTotal=0, sumPct=0, totalDoneDays=0;
+  const rows=studs.map(s=>{
+    const doneDays=(s.completedModules||[]).length; totalDoneDays+=doneDays;
+    const pct=Math.round(doneDays/P*100); sumPct+=pct;
     const g=store.grades[s.id]||{}, ts=store.taskstatus[s.id]||{};
     const myHw=store.homework.filter(h=>assignedTo(h,s.id));
     let graded=0,submitted=0,hwOverdue=0;
-    myHw.forEach(h=>{ const st=(g[h.id]||{}).status||"pending";
-      if(st==="graded")graded++; else if(st==="submitted"){submitted++;toReview++;}
-      else if(h.due&&h.due<today()){hwOverdue++;} });
+    myHw.forEach(h=>{ const st=(g[h.id]||{}).status||"pending"; if(st==="graded")graded++; else if(st==="submitted"){submitted++;toReview++;} else if(h.due&&h.due<today())hwOverdue++; });
     const myTasks=store.tasks.filter(t=>assignedTo(t,s.id));
     let tDone=0,tOverdue=0;
-    myTasks.forEach(t=>{ const st=(ts[t.id]||{}).status||"not-started";
-      if(st==="done")tDone++; else if(t.due&&t.due<today()){tOverdue++;} });
+    myTasks.forEach(t=>{ const st=(ts[t.id]||{}).status||"not-started"; if(st==="done")tDone++; else if(t.due&&t.due<today())tOverdue++; });
     const od=hwOverdue+tOverdue; overdueTotal+=od;
     const flags=[];
     if(submitted)flags.push(`<span class="badge b-blue">${submitted} to review</span>`);
@@ -512,24 +508,27 @@ function vDashboard(){
     if(!flags.length)flags.push(`<span class="badge b-green">On track</span>`);
     return `<tr>
       <td><span class="who">${avatarHTML(s.name)}<strong>${esc(s.name)}</strong></span></td>
-      <td><span class="mini-bar"><i style="width:${pct}%"></i></span>${pct}%</td>
+      <td><div style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span class="mini-bar"><i style="width:${pct}%"></i></span><strong>${pct}%</strong><span style="color:var(--muted);font-size:.82rem">${doneDays}/${P} days</span></div></td>
       <td>${graded}/${myHw.length}${submitted?` <span class="badge b-blue">${submitted} new</span>`:""}</td>
       <td>${tDone}/${myTasks.length}</td>
       <td>${flags.join(" ")}</td></tr>`;
   }).join("");
+  const avg=studs.length?Math.round(sumPct/studs.length):0;
   const cards=`<div class="dash-cards">
-    <div class="card"><div class="stat"><div class="num">${activeStudents().length}</div><div class="lbl">Active trainees</div></div></div>
-    <div class="card"><div class="stat"><div class="num">${pendingAct}</div><div class="lbl">Awaiting activation</div></div></div>
+    <div class="card"><div class="stat"><div class="num">${studs.length}</div><div class="lbl">Active trainees</div></div></div>
+    <div class="card"><div class="stat"><div class="num">${avg}%</div><div class="lbl">Avg plan progress</div></div></div>
     <div class="card"><div class="stat"><div class="num" style="color:var(--accent)">${toReview}</div><div class="lbl">Homework to review</div></div></div>
     <div class="card"><div class="stat"><div class="num" style="color:${overdueTotal?'var(--red)':'var(--green)'}">${overdueTotal}</div><div class="lbl">Overdue items</div></div></div>
   </div>`;
-  const table=activeStudents().length
-    ? `<div class="dash-wrap"><table class="dash"><thead><tr><th>Trainee</th><th>Plan</th><th>Homework</th><th>Tasks</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`
+  const cohortBar=`<div class="card"><h3>Cohort training-plan progress</h3>
+    <div class="meta">${avg}% average across ${studs.length} trainee${studs.length===1?"":"s"} · ${totalDoneDays} of ${studs.length*P} day-completions · ${P}-day plan</div>
+    <div class="progress-outer"><div class="progress-inner" style="width:${avg}%"></div></div></div>`;
+  const pendNote=(role==="admin"&&pendingAct)?`<div class="card warn-card">${pendingAct} account(s) awaiting activation — see the Students tab.</div>`:"";
+  const table=studs.length
+    ? `<div class="dash-wrap"><table class="dash"><thead><tr><th>Trainee</th><th>Plan progress</th><th>Homework</th><th>Tasks</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`
     : '<p class="empty">No active trainees yet.</p>';
-  return `<h2 class="section-title">Progress dashboard</h2>${cards}${table}`;
+  return `<h2 class="section-title">Progress dashboard</h2>${cards}${cohortBar}${pendNote}${table}`;
 }
-
-/* ---------- admin: managers ---------- */
 function vAdmManagers(){
   if(!store.meta) return needInit();
   const list=store.managerEmails||[];
