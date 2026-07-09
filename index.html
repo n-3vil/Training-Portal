@@ -1,4 +1,13 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>SOTI preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOTI Training Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
   :root{
     --bg:#eef2f9; --card:#ffffff; --ink:#1a2233; --muted:#6b7280;
     --accent:#2872E5; --accent-dark:#1e5fc4; --accent-light:#32B6E9; --accent-soft:#e8f0fd;
@@ -116,24 +125,514 @@
   .mod-grid label{display:flex;align-items:center;gap:10px;font-size:.86rem;font-weight:500;color:var(--ink);background:#f6f8fc;border:1px solid var(--border);padding:10px 13px;border-radius:10px;cursor:pointer;line-height:1.35}
   .mod-grid label:hover{background:#eef2f9;border-color:#d4def0}
   @media(max-width:640px){.form-grid{grid-template-columns:1fr}.eval-row{grid-template-columns:1fr 1fr}header h1{font-size:1.2rem}.section-title{font-size:1.15rem}}
-</style></head><body>
-<header><div class="wrap"><div class="brand-row"><svg viewBox="0 0 229.6 54.48" xmlns="http://www.w3.org/2000/svg" aria-label="SOTI" role="img"><g fill="#FFFFFF"><path d="M131 8.27C128.56 5.36 126.34 3.96 123.08 2.68 119.7 1.4 113.88 0 103.87 0 93.86 0 87.92 1.28 84.55 2.68 81.17 3.96 79.08 5.36 76.63 8.27 74.07 11.3 71.39 16.88 71.39 27.36 71.39 37.84 74.42 43.66 77.09 46.45 78.6 48.08 81.75 50.29 84.42 51.46 88.03 52.86 94.08 54.37 103.86 54.37 113.64 54.37 119.69 52.86 123.3 51.46 125.98 50.41 129.12 48.2 130.63 46.45 133.19 43.66 136.33 38.3 136.33 27.36 136.21 16.88 133.42 11.3 130.98 8.27ZM120.75 42.26C117.84 45.17 112.95 46.8 103.87 46.8 94.79 46.8 89.9 45.05 86.99 42.26 82.68 38.07 82.33 29.8 82.33 27.13 82.33 19.8 83.84 15.02 86.17 12.23 89.08 8.74 93.15 7.46 103.86 7.46 114.57 7.46 118.64 8.86 121.55 12.23 123.99 15.02 125.39 19.8 125.39 27.13 125.27 29.92 124.92 38.07 120.73 42.26Z"/><path d="M179.54 51.45C179.54 52.5 178.84 52.96 177.79 52.96L171.04 52.96C169.99 52.96 169.41 52.49 169.41 51.45L169.41 8.73C169.41 8.38 169.29 8.15 168.83 8.15L146.48 8.15C145.08 8.15 144.5 7.57 144.5 6.29L144.5 3.03C144.5 1.63 145.08 1.05 146.36 1.05L202.12 1.05C203.52 1.05 203.98 1.63 203.98 3.03L203.98 6.29C203.98 7.69 203.4 8.15 202.12 8.15L180 8.15C179.65 8.15 179.42 8.27 179.42 8.73L179.42 51.45 179.54 51.45Z"/><path d="M219.7 51.45C219.7 52.61 220.28 53.31 221.45 53.31L227.85 53.31C229.01 53.31 229.6 52.73 229.6 51.45L229.6 2.91C229.6 1.75 229.02 1.05 227.85 1.05L221.45 1.05C220.29 1.05 219.7 1.63 219.7 2.91L219.7 51.45Z"/><path d="M53.12 48.66C56.61 45.52 57.31 41.21 57.31 37.83 57.31 34.1 56.03 30.5 53.58 28.17 51.37 25.96 48.69 24.33 42.06 23.28 32.98 21.88 19.01 20.37 16.57 19.67 13.43 18.86 11.22 17.57 10.98 14.43 10.98 14.08 11.1 13.73 11.21 13.27 11.68 11.52 12.84 9.66 16.33 8.61 19.36 7.68 23.31 7.33 29.48 7.33 36.58 7.33 41.24 7.68 50.32 9.08 51.6 9.31 51.72 8.15 51.83 7.45 52.06 6.64 52.18 5.12 52.3 4.31 52.42 2.8 52.18 2.45 51.02 2.1 48.92 1.52 39.5 0 28.67 0 13.31 0 7.83 2.44 5.62 3.96 2.71 5.82 0.73 8.73 0.15 12.81-0.2 15.6 0.03 18.28 1.08 20.49 2.24 23.05 3.99 25.15 9.46 27.36 15.86 29.92 36.47 31.55 39.73 32.25 45.08 33.53 45.9 35.86 46.13 38.3 46.25 39.46 46.36 42.03 43.1 44.12 39.37 46.45 31.23 47.15 27.5 47.03 27.5 47.03 20.86 47.03 14.35 46.33 7.95 45.63 3.76 45.05 2.94 45.05 1.89 45.05 1.43 45.4 1.19 46.8 1.07 47.61 0.96 48.66 0.84 49.83 0.72 51.69 1.07 52.16 3.87 52.62 9.81 53.67 18.89 54.48 26.92 54.48L26.92 54.48C31.81 54.25 46.71 54.36 53.11 48.66Z"/></g></svg><div class="brand-sep"></div><h1>Technical Support Onboarding</h1><div class="spacer"></div><button class="btn btn-ghost">Log out</button></div><p class="sub">Admin — Nevil</p></div></header>
-<nav><div class="wrap"><button class="active">Dashboard</button><button>Students</button><button>Homework</button><button>Tasks</button><button>Training Plan</button><button>Managers</button></div></nav>
-<main class="wrap">
-<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px 14px;margin-bottom:18px;font-size:.82rem;color:var(--muted)">Static preview with sample data.</div>
-<h2 class="section-title">Progress dashboard</h2>
-<div class="dash-cards">
- <div class="card"><div class="stat"><div class="num">3</div><div class="lbl">Active trainees</div></div></div>
- <div class="card"><div class="stat"><div class="num">31%</div><div class="lbl">Avg plan progress</div></div></div>
- <div class="card"><div class="stat"><div class="num" style="color:var(--accent)">1</div><div class="lbl">Homework to review</div></div></div>
- <div class="card"><div class="stat"><div class="num" style="color:var(--red)">2</div><div class="lbl">Overdue items</div></div></div>
-</div>
-<div class="card"><h3>Technical Support Onboarding</h3><div class="meta">31% average across 3 trainees · 14 of 45 day-completions · 15-day plan</div><div class="progress-outer"><div class="progress-inner" style="width:31%"></div></div></div>
-<hr style="border:none;border-top:1px solid var(--border);margin:34px 0">
-<h2 class="section-title">Students</h2>
-<div class="card"><h3><span class="who"><span class="avatar" style="background:#32B6E9">TP</span>Tessa Prince</span></h3>
-<div class="meta">tessapp.26@gmail.com · Started Jul 8, 2026</div>
-<div class="field"><label>Completed modules</label><div class="mod-grid"><label><input type="checkbox" checked> Day 1: Orientation & Mobility Basics · Infrastr…</label><label><input type="checkbox" checked> Day 2: SOTI Products Overview · OneLogin Overvi…</label><label><input type="checkbox"> Day 3: MobiControl Overview</label><label><input type="checkbox"> Day 4: Android</label><label><input type="checkbox"> Day 5: Android Policies Management</label><label><input type="checkbox"> Day 6: Android Profiles, Packages & Policies</label><label><input type="checkbox"> Day 7: Content, Shared Device & API</label><label><input type="checkbox"> Day 8: iOS</label><label><input type="checkbox"> Day 9: Windows · Architecture, Installation & U…</label><label><input type="checkbox"> Day 10: Integrations · Other Components Basic Ov…</label><label><input type="checkbox"> Day 11: Xsight Installation and Overview</label><label><input type="checkbox"> Day 12: Xsight KB Articles</label><label><input type="checkbox"> Day 13: Salesforce Overview · SOTI Identity</label><label><input type="checkbox"> Day 14: Other Troubleshooting Tool · Customer En…</label><label><input type="checkbox"> Day 15: Questions and Answers</label></div></div>
-<div class="row-actions"><button class="btn btn-small btn-danger">Remove student</button></div></div>
-<hr style="border:none;border-top:1px solid var(--border);margin:34px 0">
-<h2 class="section-title">Training Plan</h2><div class="card plan-day"><div class="plan-day-head"><h3>Day 1 — Orientation & Mobility Basics · Infrastructure & Networking</h3><div class="meta">Jul 20, 2026 <span class="badge b-green">Completed</span></div></div><div class="plan-sec"><div class="plan-sec-title">Orientation & Mobility Basics</div><div class="plan-topic"><div class="plan-topic-name">Introduction to Mobility Management</div><ul class="topics"><li>Introduction to SOTI & SOTI One Service including (MDM, EMM, UEM)</li><li>Introduction to Mobile Device Management</li><li>Introduction to Mobile Platforms</li></ul></div></div><div class="plan-sec"><div class="plan-sec-title">Infrastructure & Networking</div><div class="plan-topic"><div class="plan-topic-name">Infrastructure</div><ul class="topics"><li>Windows Servers, AD, DNS, overview of DNS Records and Zones, DHCP, Certificates, MMC, IIS</li></ul></div><div class="plan-topic"><div class="plan-topic-name">Networking</div><ul class="topics"><li>LAN, WAN, DMZ, NAT, TCP, TLS, HTTPS, FTP, SFTP, SSL, URL, FQDN, Hostname, Proxy, Firewall, Load Balancer, Private IP, Public IP, MAC, Ports, Services</li></ul></div></div></div></main><footer>SOTI Training Portal</footer></body></html>
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand-row">
+    <svg viewBox="0 0 229.6 54.48" xmlns="http://www.w3.org/2000/svg" aria-label="SOTI" role="img"><g fill="#FFFFFF"><path d="M131 8.27C128.56 5.36 126.34 3.96 123.08 2.68 119.7 1.4 113.88 0 103.87 0 93.86 0 87.92 1.28 84.55 2.68 81.17 3.96 79.08 5.36 76.63 8.27 74.07 11.3 71.39 16.88 71.39 27.36 71.39 37.84 74.42 43.66 77.09 46.45 78.6 48.08 81.75 50.29 84.42 51.46 88.03 52.86 94.08 54.37 103.86 54.37 113.64 54.37 119.69 52.86 123.3 51.46 125.98 50.41 129.12 48.2 130.63 46.45 133.19 43.66 136.33 38.3 136.33 27.36 136.21 16.88 133.42 11.3 130.98 8.27ZM120.75 42.26C117.84 45.17 112.95 46.8 103.87 46.8 94.79 46.8 89.9 45.05 86.99 42.26 82.68 38.07 82.33 29.8 82.33 27.13 82.33 19.8 83.84 15.02 86.17 12.23 89.08 8.74 93.15 7.46 103.86 7.46 114.57 7.46 118.64 8.86 121.55 12.23 123.99 15.02 125.39 19.8 125.39 27.13 125.27 29.92 124.92 38.07 120.73 42.26Z"/><path d="M179.54 51.45C179.54 52.5 178.84 52.96 177.79 52.96L171.04 52.96C169.99 52.96 169.41 52.49 169.41 51.45L169.41 8.73C169.41 8.38 169.29 8.15 168.83 8.15L146.48 8.15C145.08 8.15 144.5 7.57 144.5 6.29L144.5 3.03C144.5 1.63 145.08 1.05 146.36 1.05L202.12 1.05C203.52 1.05 203.98 1.63 203.98 3.03L203.98 6.29C203.98 7.69 203.4 8.15 202.12 8.15L180 8.15C179.65 8.15 179.42 8.27 179.42 8.73L179.42 51.45 179.54 51.45Z"/><path d="M219.7 51.45C219.7 52.61 220.28 53.31 221.45 53.31L227.85 53.31C229.01 53.31 229.6 52.73 229.6 51.45L229.6 2.91C229.6 1.75 229.02 1.05 227.85 1.05L221.45 1.05C220.29 1.05 219.7 1.63 219.7 2.91L219.7 51.45Z"/><path d="M53.12 48.66C56.61 45.52 57.31 41.21 57.31 37.83 57.31 34.1 56.03 30.5 53.58 28.17 51.37 25.96 48.69 24.33 42.06 23.28 32.98 21.88 19.01 20.37 16.57 19.67 13.43 18.86 11.22 17.57 10.98 14.43 10.98 14.08 11.1 13.73 11.21 13.27 11.68 11.52 12.84 9.66 16.33 8.61 19.36 7.68 23.31 7.33 29.48 7.33 36.58 7.33 41.24 7.68 50.32 9.08 51.6 9.31 51.72 8.15 51.83 7.45 52.06 6.64 52.18 5.12 52.3 4.31 52.42 2.8 52.18 2.45 51.02 2.1 48.92 1.52 39.5 0 28.67 0 13.31 0 7.83 2.44 5.62 3.96 2.71 5.82 0.73 8.73 0.15 12.81-0.2 15.6 0.03 18.28 1.08 20.49 2.24 23.05 3.99 25.15 9.46 27.36 15.86 29.92 36.47 31.55 39.73 32.25 45.08 33.53 45.9 35.86 46.13 38.3 46.25 39.46 46.36 42.03 43.1 44.12 39.37 46.45 31.23 47.15 27.5 47.03 27.5 47.03 20.86 47.03 14.35 46.33 7.95 45.63 3.76 45.05 2.94 45.05 1.89 45.05 1.43 45.4 1.19 46.8 1.07 47.61 0.96 48.66 0.84 49.83 0.72 51.69 1.07 52.16 3.87 52.62 9.81 53.67 18.89 54.48 26.92 54.48L26.92 54.48C31.81 54.25 46.71 54.36 53.11 48.66Z"/></g></svg>
+    <div class="brand-sep"></div>
+    <h1 id="cohort-name">Training Portal</h1>
+    <div class="spacer"></div>
+    <button class="btn btn-ghost" id="logout-btn" style="display:none">Log out</button>
+  </div>
+  <p class="sub" id="header-sub"></p>
+</div></header>
+
+<nav id="tabs" style="display:none"><div class="wrap"></div></nav>
+<main class="wrap"><div id="content"><p class="empty">Loading…</p></div></main>
+<div id="toast"></div>
+<footer>SOTI Training Portal</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword,
+  signInWithEmailAndPassword, signOut, sendPasswordResetEmail }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc,
+  collection, getDocs }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { FIREBASE_CONFIG, ADMIN_EMAILS } from "./firebase-config.js";
+
+/* ---------- utilities ---------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function initials(n){ const p=String(n||"").trim().split(/\s+/); return (((p[0]||"")[0]||"")+((p[1]||"")[0]||"")).toUpperCase()||"?"; }
+const AV_COLORS=["#2872E5","#32B6E9","#2C9446","#E06A1E","#7C4DE0","#0E9BB0"];
+function avatarHTML(name){ let h=0; const t=String(name||""); for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))>>>0; return `<span class="avatar" style="background:${AV_COLORS[h%AV_COLORS.length]}">${esc(initials(name))}</span>`; }
+const today = () => new Date().toISOString().slice(0,10);
+const fmtDate = d => d ? new Date(d+"T00:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"}) : "";
+function toast(m){ $("toast").textContent=m; $("toast").classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>$("toast").classList.remove("show"),2800); }
+function dueBadge(due,done){ if(!due) return ""; if(done) return `<span class="badge b-gray">Due ${fmtDate(due)}</span>`; return due<today()?`<span class="badge b-red">Overdue — was due ${fmtDate(due)}</span>`:`<span class="badge b-blue">Due ${fmtDate(due)}</span>`; }
+function hwStatusView(ev){ if(!ev||!ev.status||ev.status==="pending") return {label:"Not submitted",cls:"b-amber",done:false}; if(ev.status==="submitted") return {label:"Submitted — awaiting review",cls:"b-blue",done:true}; if(ev.status==="graded") return {label:"Graded"+(ev.grade?": "+ev.grade:""),cls:"b-green",done:true}; return {label:ev.status,cls:"b-gray",done:false}; }
+const assignedTo = (a,uid) => (a.assignedTo||[]).includes("all") || (a.assignedTo||[]).includes(uid);
+
+/* ---------- config guard ---------- */
+if (String(FIREBASE_CONFIG.apiKey||"").startsWith("PASTE")) {
+  $("content").innerHTML = `<div class="card warn-card"><h3>Not configured yet</h3>
+    <p>Open <code>firebase-config.js</code> and paste your Firebase project settings and instructor email, then reload. See <code>README.md</code> for step-by-step setup.</p></div>`;
+  throw new Error("Firebase not configured");
+}
+
+/* ---------- init ---------- */
+const app = initializeApp(FIREBASE_CONFIG);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const isAdminEmail = email => ADMIN_EMAILS.map(e=>e.toLowerCase()).includes(String(email||"").toLowerCase());
+const PORTAL_TITLE = "Technical Support Onboarding";
+
+/* ---------- app state ---------- */
+let user = null, role = null;   // role: "admin" | "student" | "pending"
+let tab = null;
+const store = {};               // loaded data
+
+const SOTI_PLAN = [{"day": 1, "date": "2026-07-20", "sections": [{"content": "Orientation & Mobility Basics", "topics": [{"t": "Introduction to Mobility Management", "subs": ["Introduction to SOTI & SOTI One Service including (MDM, EMM, UEM)", "Introduction to Mobile Device Management", "Introduction to Mobile Platforms"], "refs": ["Introduction to SOTI & MobiControl (MDM, EMM, UEM)", "Introduction to Mobile Device Management", "Introduction to Mobile Platforms"]}]}, {"content": "Infrastructure & Networking", "topics": [{"t": "Infrastructure", "subs": ["Windows Servers, AD, DNS, overview of DNS Records and Zones, DHCP, Certificates, MMC, IIS"]}, {"t": "Networking", "subs": ["LAN, WAN, DMZ, NAT, TCP, TLS, HTTPS, FTP, SFTP, SSL, URL, FQDN, Hostname, Proxy, Firewall, Load Balancer, Private IP, Public IP, MAC, Ports, Services"]}]}], "id": "d1", "title": "Orientation & Mobility Basics · Infrastructure & Networking"}, {"day": 2, "date": "2026-07-21", "sections": [{"content": "SOTI Products Overview", "topics": [{"t": "Introduction to SOTI MobiControl", "subs": ["Introduction to SOTI MobiControl and explain how it addresses the requirements of Enterprise Mobility Management."], "refs": ["Introduction to SOTI ONE Platform"]}, {"t": "Introduction to SOTI Identity", "subs": ["Introduction to SOTI Identity and how it addresses the requirements of Identity and Access Management."]}, {"t": "Introduction to SOTI Xsight / Assist", "subs": ["Explain how it integrates with SOTI MobiControl, providing a supercharged solution with the operational intelligence, support and management tools that customers need to streamline their business."]}, {"t": "Introduction to SOTI Snap", "subs": ["Explain how it helps organizations build the mobile apps they need quickly and cost-effectively, without the need for specialized resources."]}, {"t": "Introduction to SOTI Connect", "subs": ["Explain how it empowers organizations to effectively manage and gain visibility into the diverse and numerous IoT-enabled devices throughout their operations, while reducing the total cost of ownership (TCO)."]}, {"t": "Introduction to OneLogin and its components", "subs": ["All tool overview"]}]}, {"content": "OneLogin Overview and VM Portal", "topics": [{"t": "Setup VM for Training and installation", "subs": ["VM Request based on Requirement and MC installation along with all service introduction"]}]}], "id": "d2", "title": "SOTI Products Overview · OneLogin Overview and VM Portal"}, {"day": 3, "date": "2026-07-22", "sections": [{"content": "MobiControl Overview", "topics": [{"t": "Introduction to SOTI MobiControl", "subs": ["Console Walkthrough - Menu, Dashboard, Legacy UI, User Profile"]}, {"t": "MobiControl System Health & Analysis Dashboard", "subs": ["Overview of System Health & Analysis Dashboard"]}, {"t": "MobiControl Search / SOTI Search", "subs": ["SOTI Search"]}]}], "id": "d3", "title": "MobiControl Overview"}, {"day": 4, "date": "2026-07-23", "sections": [{"content": "Android", "topics": [{"t": "Enrollment Policy", "subs": ["Add device rule & advanced configurations"], "refs": ["Android Device Management"]}, {"t": "Device Enrolment Method", "subs": ["QR, AE, Classic, NFC, ZTE, KNOX"]}, {"t": "Device Management", "subs": ["Explaining all AE, AC, COPE, BYOD"], "refs": ["Android Enterprise"]}, {"t": "Device Configurations", "subs": ["Profile Payloads & App deployments overview"]}, {"t": "Android Device Scripts", "subs": ["Device details, Location, Apps, Certificates, Logs tab"]}]}], "id": "d4", "title": "Android"}, {"day": 5, "date": "2026-07-24", "sections": [{"content": "Android Policies Management", "topics": [{"t": "Signal Policy", "subs": ["Alerts Rule"]}, {"t": "Data Collection Policy", "subs": ["Data Collection Rule"]}, {"t": "File Sync Policy", "subs": ["File Sync Rule"]}, {"t": "Apps", "subs": ["Application Catalogue Rule"], "refs": ["Application Deployment"]}, {"t": "TEM Rule", "subs": ["TEM Rules & its limitations"]}]}], "id": "d5", "title": "Android Policies Management"}, {"day": 6, "date": "2026-07-27", "sections": [{"content": "Android Profiles, Packages & Policies", "topics": [{"t": "Profiles", "subs": ["Overview"], "refs": ["Policy Management"]}, {"t": "Classic Payloads Vs Enterprise", "subs": ["Difference between Android Classic/Enterprise payloads"]}, {"t": "Compliance Policies", "subs": ["Compliance policy use cases and how it works"]}, {"t": "Package Deployment", "subs": ["Package Studio and its features, direct apk upload"]}]}], "id": "d6", "title": "Android Profiles, Packages & Policies"}, {"day": 7, "date": "2026-07-28", "sections": [{"content": "Content, Shared Device & API", "topics": [{"t": "Content Management", "subs": ["Content Library"], "refs": ["Content Library"]}, {"t": "Shared Device", "subs": ["Configuring Shared device and its use cases"]}, {"t": "MobiControl API", "subs": ["Generating Client ID & Client Secret, Swagger UI, Making API Calls"]}]}], "id": "d7", "title": "Content, Shared Device & API"}, {"day": 8, "date": "2026-07-29", "sections": [{"content": "iOS", "topics": [{"t": "APNS Configurations", "subs": ["Why APNS and how to configure it?"], "refs": ["iOS Enrollment"]}, {"t": "iOS Device enrolment", "subs": ["Different Enrollment Types"]}, {"t": "Profiles & Policies", "subs": ["Shared device login"]}, {"t": "iOS App Deployment", "subs": ["Enterprise Apps & App Store Apps"], "refs": ["iOS Application Deployment"]}, {"t": "DEP Management", "subs": ["Explain why DEP and how it works"], "refs": ["Device Enrollment Program"]}, {"t": "VPP Management", "subs": ["Explain why VPP and how it works"], "refs": ["iOS Application Deployment"]}, {"t": "Report Management", "subs": ["Schedule Reports, Platform based reports, different formats"]}, {"t": "Console Security Setting", "subs": ["Managing Users, Groups, & Device Group Permissions"]}]}], "id": "d8", "title": "iOS"}, {"day": 9, "date": "2026-07-30", "sections": [{"content": "Windows", "topics": [{"t": "Windows Desktop Enrolment", "subs": ["Different Enrollment Types & How to enroll it"], "refs": ["Windows Device Enrollment"]}, {"t": "Windows Modern Enrollment", "subs": ["Different Enrollment Types & How to enroll it"]}, {"t": "Windows CE Enrolment", "subs": ["Different Enrollment Types & How to enroll it"]}, {"t": "Windows Classic/Modern profiles", "subs": ["Profile Payloads & App deployments overview"]}]}, {"content": "Architecture, Installation & Upgrade", "topics": [{"t": "Components", "subs": ["SQL Database", "Management Server & Assist (legacy)", "Deployment Server, MS server and other service workflow", "Device Agent", "SOTI Services"]}, {"t": "Installation", "subs": ["Hardware, Software & Network Requirements", "Installation Process - Explanation on every step (What & Why?)", "MCAU - DMA, PAA, SAA, MSA, Certificates"], "refs": ["Installation Lab"]}, {"t": "Upgrade", "subs": ["Upgrade process"]}, {"t": "Workflow", "subs": ["Communication flow between all the components (AE, APNS, DS, MS, DB, Agent, LDAP, CLA, CA, ERG, PAS, iOS, Windows Modern)"], "refs": ["SOTI MobiControl Workflow"]}]}], "id": "d9", "title": "Windows · Architecture, Installation & Upgrade"}, {"day": 10, "date": "2026-07-31", "sections": [{"content": "Integrations", "topics": [{"t": "LDAP, Certificate Authority, Identity Provider, SMTP, Email Server, Global Proxy", "subs": ["Quick overview and understanding of supported & third party integrations with SOTI ONE products. Professional Services involvement with these integrations."]}]}, {"content": "Other Components Basic Overview", "topics": [{"t": "Cloud Link Agent", "subs": ["What & Why CLA? Evolution of CLA (v1 to v4)"]}, {"t": "Enterprise Resource Gateway", "subs": ["What & Why ERG? How to configure it?"]}, {"t": "Xtreme Hub", "subs": ["What & Why Xtreme Hub"]}, {"t": "SOTI Surf", "subs": ["How to deploy SOTI Surf & its features"]}, {"t": "SOTI Hub", "subs": ["How to deploy SOTI Hub & its features"]}, {"t": "PAS", "subs": ["Explain what is PAS and its enrollment process"]}]}, {"content": "Troubleshooting", "topics": [{"t": "Logs and Alerts", "subs": ["Server Side & Device Side logs"]}, {"t": "Troubleshooting tools", "subs": ["Notepad++, SQL Lite, SQL Trace, Wireshark, Adb"]}]}, {"content": "MobiControl Database", "topics": [{"t": "MobiControl DB", "subs": ["Purpose of MobiControl Database", "Data stored (devices, users, policies, jobs, logs)", "Relationship with MobiControl services", "On-Prem vs Cloud DB ownership (customer vs SOTI)", "When support needs DB validation", "Read-only vs write operations (support limitations)", "Support Use: Devices not syncing data", "Jobs stuck in pending state", "Console performance issues"]}, {"t": "Archive DB", "subs": ["What is Archive DB and why it is used", "Difference between Primary DB and Archive DB", "Data types archived (logs, historical records)", "Archive schedule and retention policy", "Impact of large Archive DB on performance", "Support Use Case: Large DB size complaints", "Slow reports and console loading", "Compliance & data retention queries"]}, {"t": "Tables", "subs": ["Types of tables used in MobiControl", "Device-related tables", "User & group tables", "Job & command tables"]}, {"t": "Stored Procedures", "subs": ["How MobiControl uses stored procedures for: Data processing, Cleanup jobs, Reporting"]}, {"t": "Truncating logs", "subs": ["What are database logs", "Difference between Application logs and SQL transaction logs", "When log truncation is required", "Risks of improper truncation", "Recommended best practices"]}, {"t": "Backup & Restore Database", "subs": ["Pre-upgrade backup requirement", "Support Use Case", "Failed upgrades", "Accidental data loss", "Server migration assistance"]}]}], "id": "d10", "title": "Integrations · Other Components Basic Overview · Troubleshooting · MobiControl Database"}, {"day": 11, "date": "2026-08-03", "sections": [{"content": "Xsight Installation and Overview", "topics": [{"t": "Introduction to SOTI XSight", "subs": ["Installation", "Setting Up SOTI Xsight", "Using Stella", "Operational Intelligence", "Live View", "Watchlists", "Incident Management", "Live Support", "Managing Shared Topic bundles", "Manage Agent Permissions", "Generating the SOTI XSight Agent", "Sync MobiControl Info", "Roles and Permissions", "Using the Self Service Portal", "Diagnostics and Remote Control", "Using the SOTI XSight Administration Utility"], "refs": ["SOTI XSight Help"]}]}], "id": "d11", "title": "Xsight Installation and Overview"}, {"day": 12, "date": "2026-08-04", "sections": [{"content": "Xsight KB Articles", "topics": [{"t": "Xsight KB Articles", "subs": ["Xsight KB Articles"], "refs": ["Xsight KB Articles"]}]}], "id": "d12", "title": "Xsight KB Articles"}, {"day": 13, "date": "2026-08-05", "sections": [{"content": "Salesforce Overview", "topics": [{"t": "Salesforce", "subs": ["Accounts, Reports, Cases, Assets, Opportunities"], "refs": ["Salesforce"]}]}, {"content": "SOTI Identity", "topics": [{"t": "SOTI Identity", "subs": ["User Management", "Application Management", "LDAP and IdP Management", "Policy Management", "SOTI Identity Account Settings", "Preferences", "Advanced Configuration", "SOTI Cloud Link Agent"], "refs": ["SOTI Identity Help", "Identity KB Articles", "Identity Release Notes"]}]}], "id": "d13", "title": "Salesforce Overview · SOTI Identity"}, {"day": 14, "date": "2026-08-06", "sections": [{"content": "Other Troubleshooting Tool", "topics": [{"t": "Customer Manager", "subs": ["What information can be retrieved using Customer Manager.", "Details and use cases on customers, customer product, orders, downloads, license instance transaction, reports etc."]}]}, {"content": "Customer End Access and Portal Overview", "topics": [{"t": "Customer Portal (Premium Onboarding)", "subs": ["Customer Portal Overview", "Purpose of the Customer Portal", "Target users (IT Admins, Project Managers, Partners)", "Difference between Standard Support vs Premium Onboarding", "Portal access requirements"]}]}, {"content": "CMS Overview and Deep Introduction", "topics": [{"t": "CMS walk-through", "subs": ["CMS overview and run job and required information, Backup, Server resize"]}]}, {"content": "Cloud Alert Project and Overview", "topics": [{"t": "Cloud Alerts", "subs": ["Cloud Alerts Process and Guidebook"]}]}, {"content": "Operations", "topics": [{"t": "Ring General configure (Call queue)"}, {"t": "JIRA"}, {"t": "Help Tool", "subs": ["SOTI MobiControl 2026.0 Help"], "refs": ["MobiControl Help"]}, {"t": "SOTI Pulse", "refs": ["SOTI Central Review"]}, {"t": "Help File", "subs": ["SOTI MobiControl KB Articles"], "refs": ["MobiControl KB Articles"]}, {"t": "Case transfer and other processes"}, {"t": "Support calendars"}, {"t": "Queue coverage schedule"}, {"t": "Addition to Teams group"}, {"t": "Mock Call Debrief (Call flow and scripts + QA template review) — Trainer: Himanshi Khatri"}, {"t": "SLAs", "subs": ["Response Time: Time to acknowledge or first reply to a case.", "Resolution Time: Time to fully resolve the issue.", "Priority / Severity Levels: Determines how fast we must act.", "Business Hours vs 24/7 Support: SLAs apply based on defined hours.", "Customer vs Internal SLA: Some SLAs are customer-facing, others internal."]}, {"t": "Technical Support Handbook"}, {"t": "Understand NPS", "subs": ["NPS measures customer experience, not just issue resolution", "Every support interaction can impact NPS", "Customers rate how likely they are to recommend SOTI"], "refs": ["SLA_NPS_Checklist_Technical_Support_v1.docx"]}]}], "id": "d14", "title": "Other Troubleshooting Tool · Customer End Access and Portal Overview · CMS Overview and Deep Introduction · Cloud Alert Project and Overview · Operations"}, {"day": 15, "date": "2026-08-07", "sections": [{"content": "Questions and Answers", "topics": [{"t": "Open Q&A session", "subs": ["Recap and clarify doubts from the full program"]}]}], "id": "d15", "title": "Questions and Answers"}];
+const DEFAULT_PLAN = SOTI_PLAN;
+
+/* ---------- Firestore helpers ---------- */
+const metaRef = () => doc(db,"config","meta");
+async function loadMeta(){ const s=await getDoc(metaRef()); store.meta = s.exists()? s.data() : null; }
+async function loadCollection(name){ const q=await getDocs(collection(db,name)); return q.docs.map(d=>({id:d.id,...d.data()})); }
+async function loadStudentDoc(uid){ const s=await getDoc(doc(db,"students",uid)); return s.exists()? s.data() : null; }
+async function loadSub(uid,sub){ const q=await getDocs(collection(db,"students",uid,sub)); const o={}; q.docs.forEach(d=>o[d.id]=d.data()); return o; }
+async function loadManagerEmails(){ try{ const m=await getDoc(doc(db,"config","managers")); store.managerEmails = m.exists()?(m.data().emails||[]):[]; }catch(e){ store.managerEmails=[]; } return store.managerEmails; }
+async function isManagerEmail(email){ const list=await loadManagerEmails(); return list.map(e=>String(e).toLowerCase()).includes(String(email||"").toLowerCase()); }
+
+/* ---------- auth screens ---------- */
+function renderAuth(mode){
+  mode = mode || "login";
+  const login = mode==="login";
+  $("tabs").style.display="none"; $("logout-btn").style.display="none";
+  $("header-sub").textContent="";
+  $("cohort-name").textContent=PORTAL_TITLE;
+  $("content").innerHTML = `
+    <div class="login-box"><div class="card">
+      <h2>${login?"Sign in":"Create your account"}</h2>
+      <p class="hint">${login?"Use the email and password for your training account.":"Register with your email and a password you choose. Your instructor will activate your account."}</p>
+      ${login?"":`<div class="field"><label>Your full name</label><input type="text" id="au-name" placeholder="Maria Lopez"></div>`}
+      <div class="field"><label>Email</label><input type="email" id="au-email" autocomplete="email" placeholder="you@example.com"></div>
+      <div class="field"><label>Password</label><input type="password" id="au-pass" autocomplete="${login?"current-password":"new-password"}" placeholder="${login?"":"At least 6 characters"}"></div>
+      <button class="btn" id="au-go" style="width:100%">${login?"Sign in":"Create account"}</button>
+      <div class="msg" id="au-msg"></div>
+      <div style="margin-top:16px;display:flex;justify-content:space-between">
+        <button class="btn-link" id="au-toggle">${login?"Need an account? Register":"Have an account? Sign in"}</button>
+        ${login?'<button class="btn-link" id="au-reset">Forgot password?</button>':""}
+      </div>
+    </div></div>`;
+  const setMsg=(t,ok)=>{ const m=$("au-msg"); m.textContent=t; m.className="msg "+(ok?"ok":"err"); };
+  $("au-toggle").onclick=()=>renderAuth(login?"register":"login");
+  const resetBtn=$("au-reset");
+  if(resetBtn) resetBtn.onclick=async()=>{ const em=$("au-email").value.trim(); if(!em){setMsg("Enter your email first, then click reset.");return;} try{await sendPasswordResetEmail(auth,em); setMsg("Password reset email sent to "+em,true);}catch(e){setMsg(friendly(e));} };
+  $("au-go").onclick=async()=>{
+    const email=$("au-email").value.trim(), pass=$("au-pass").value;
+    if(!email||!pass){ setMsg("Email and password are required."); return; }
+    $("au-go").disabled=true;
+    try{
+      if(login){ await signInWithEmailAndPassword(auth,email,pass); }
+      else {
+        const name=$("au-name").value.trim();
+        if(!name){ setMsg("Please enter your name."); $("au-go").disabled=false; return; }
+        const cred=await createUserWithEmailAndPassword(auth,email,pass);
+        const mgr = await isManagerEmail(email).catch(()=>false);
+        if(!isAdminEmail(email) && !mgr){
+          await setDoc(doc(db,"students",cred.user.uid),{ name, startDate:today(), completedModules:[], status:"pending", email });
+        }
+      }
+    }catch(e){ setMsg(friendly(e)); $("au-go").disabled=false; }
+  };
+  $("au-email").focus();
+}
+function friendly(e){
+  const c=(e&&e.code)||"";
+  if(c.includes("invalid-credential")||c.includes("wrong-password")||c.includes("user-not-found")) return "Email or password is incorrect.";
+  if(c.includes("email-already-in-use")) return "An account with this email already exists — try signing in.";
+  if(c.includes("weak-password")) return "Password should be at least 6 characters.";
+  if(c.includes("invalid-email")) return "That doesn't look like a valid email.";
+  if(c.includes("too-many-requests")) return "Too many attempts — wait a minute and try again.";
+  return (e&&e.message)||"Something went wrong.";
+}
+
+/* ---------- shell ---------- */
+const STUDENT_TABS=[["overview","Overview"],["plan","Training Plan"],["homework","Homework"],["tasks","Tasks"]];
+const ADMIN_TABS=[["a-dashboard","Dashboard"],["a-students","Students"],["a-homework","Homework"],["a-tasks","Tasks"],["a-plan","Training Plan"],["a-managers","Managers"]];
+const MANAGER_TABS=[["a-dashboard","Dashboard"],["m-plan","Training Plan"]];
+function renderShell(){
+  $("cohort-name").textContent = PORTAL_TITLE;
+  document.title = "SOTI " + PORTAL_TITLE;
+  $("logout-btn").style.display=""; 
+  const defs = role==="admin"?ADMIN_TABS:(role==="manager"?MANAGER_TABS:STUDENT_TABS);
+  if(role==="pending"){ $("tabs").style.display="none"; renderPending(); return; }
+  if(!defs.some(t=>t[0]===tab)) tab=defs[0][0];
+  $("header-sub").textContent = role==="admin" ? "Admin — Nevil" : (role==="manager" ? "Manager (view only) — "+user.email : "Signed in as "+((store.me&&store.me.name)||user.email));
+  const nav=$("tabs"); nav.style.display="";
+  nav.querySelector(".wrap").innerHTML = defs.map(([id,l])=>`<button data-tab="${id}" class="${id===tab?"active":""}">${l}</button>`).join("");
+  nav.querySelectorAll("button").forEach(b=>b.onclick=()=>{ tab=b.dataset.tab; nav.querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b)); render(); });
+  render();
+}
+function renderPending(){
+  $("header-sub").textContent="Account pending";
+  $("content").innerHTML=`<div class="login-box"><div class="card">
+    <h2>You're almost in 👋</h2>
+    <p class="hint">Your account was created and is waiting for your instructor to activate it. Check back shortly, or reload this page after they've set you up.</p>
+    <button class="btn" id="reloadbtn" style="width:100%">Reload</button>
+  </div></div>`;
+  $("reloadbtn").onclick=()=>location.reload();
+}
+function render(){
+  const v={overview:vOverview,plan:vPlan,homework:vHomework,tasks:vTasks,
+    "a-dashboard":vDashboard,"a-managers":vAdmManagers,"m-plan":vManagerPlan,
+    "a-students":vAdmStudents,"a-homework":vAdmHomework,"a-tasks":vAdmTasks,"a-plan":vAdmPlan};
+  $("content").innerHTML=v[tab](); wire();
+}
+
+/* ---------- data loads ---------- */
+async function loadStudent(){
+  await loadMeta();
+  store.me = await loadStudentDoc(user.uid);
+  if(!store.me){ role="pending"; return; }
+  if(store.me.status!=="active"){ role="pending"; return; }
+  role="student";
+  store.homework = await loadCollection("homework");
+  store.tasks = await loadCollection("tasks");
+  store.grades = await loadSub(user.uid,"grades");
+  store.taskstatus = await loadSub(user.uid,"taskstatus");
+}
+async function loadAdmin(){
+  await loadMeta();
+  await loadManagerEmails();
+  store.students = await loadCollection("students");
+  const skip = new Set([...ADMIN_EMAILS, ...(store.managerEmails||[])].map(e=>String(e).toLowerCase()));
+  store.students = store.students.filter(s=>!skip.has(String(s.email||"").toLowerCase()));
+  store.homework = await loadCollection("homework");
+  store.tasks = await loadCollection("tasks");
+  store.grades = {}; store.taskstatus = {};
+  for(const s of store.students){
+    store.grades[s.id] = await loadSub(s.id,"grades");
+    store.taskstatus[s.id] = await loadSub(s.id,"taskstatus");
+  }
+}
+const plan = () => (store.meta&&store.meta.plan) || [];
+
+/* ---------- student views ---------- */
+function vOverview(){
+  const me=store.me, completed=me.completedModules||[];
+  const myHw=store.homework.filter(h=>assignedTo(h,user.uid));
+  const graded=myHw.filter(h=>((store.grades[h.id]||{}).status)==="graded").length;
+  const myTasks=store.tasks.filter(t=>assignedTo(t,user.uid));
+  const open=myTasks.filter(t=>((store.taskstatus[t.id]||{}).status||"not-started")!=="done").length;
+  const pct=plan().length?Math.round(completed.length/plan().length*100):0;
+  let recent="";
+  myHw.forEach(h=>{ const ev=store.grades[h.id]; if(ev&&ev.status==="graded") recent+=`<div class="feedback"><strong>${esc(h.title)}</strong> — ${esc(ev.grade||"graded")}${ev.feedback?"<br>"+esc(ev.feedback):""}</div>`; });
+  return `<h2 class="section-title">Welcome, ${esc((me.name||"").split(" ")[0]||"there")}</h2>
+    <div class="card summary-card">
+      <div class="stat"><div class="num">${pct}%</div><div class="lbl">Plan completed</div></div>
+      <div class="stat"><div class="num">${graded}/${myHw.length}</div><div class="lbl">Homework graded</div></div>
+      <div class="stat"><div class="num">${open}</div><div class="lbl">Open tasks</div></div>
+    </div>
+    <div class="card"><h3>Training progress</h3>
+      <div class="meta">${completed.length} of ${plan().length} days completed</div>
+      <div class="progress-outer"><div class="progress-inner" style="width:${pct}%"></div></div></div>
+    ${recent?`<div class="card"><h3>Latest feedback</h3>${recent}</div>`:""}`;
+}
+function planDayCard(m, completed, showBadge){
+  const done=(completed||[]).includes(m.id);
+  const secs=(m.sections||[]).map(sec=>`
+    <div class="plan-sec"><div class="plan-sec-title">${esc(sec.content)}</div>
+      ${(sec.topics||[]).map(tp=>`<div class="plan-topic"><div class="plan-topic-name">${esc(tp.t)}</div>${(tp.subs&&tp.subs.length)?`<ul class="topics">${tp.subs.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}</div>`).join("")}
+    </div>`).join("");
+  const badge = showBadge ? (done?'<span class="badge b-green">Completed</span>':'<span class="badge b-gray">Not completed</span>') : "";
+  return `<div class="card plan-day"><div class="plan-day-head"><h3>Day ${esc(m.day)} — ${esc(m.title)}</h3><div class="meta">${fmtDate(m.date)} ${badge}</div></div>${secs}</div>`;
+}
+function vPlan(){
+  if(!plan().length) return '<p class="empty">The training plan hasn’t been set up yet.</p>';
+  const completed=(store.me&&store.me.completedModules)||[];
+  return `<h2 class="section-title">Training Plan</h2>`+plan().map(m=>planDayCard(m,completed,true)).join("");
+}
+function vManagerPlan(){
+  if(!plan().length) return '<p class="empty">The training plan hasn’t been set up yet.</p>';
+  return `<h2 class="section-title">Training Plan</h2>`+plan().map(m=>planDayCard(m,[],false)).join("");
+}
+function vHomework(){
+  const mine=store.homework.filter(h=>assignedTo(h,user.uid));
+  if(!mine.length) return '<p class="empty">No homework assigned yet.</p>';
+  return `<h2 class="section-title">Homework</h2>`+mine.map(h=>{
+    const ev=store.grades[h.id]; const st=hwStatusView(ev);
+    return `<div class="card"><h3>${esc(h.title)}</h3>
+      <div class="meta"><span class="badge ${st.cls}">${esc(st.label)}</span>${dueBadge(h.due,st.done)}</div>
+      <p>${esc(h.description)}</p>
+      ${h.submitVia?`<p class="meta" style="margin-top:8px">How to submit: ${esc(h.submitVia)}</p>`:""}
+      ${ev&&ev.feedback?`<div class="feedback"><strong>Instructor feedback:</strong> ${esc(ev.feedback)}</div>`:""}</div>`;
+  }).join("");
+}
+function vTasks(){
+  const mine=store.tasks.filter(t=>assignedTo(t,user.uid));
+  if(!mine.length) return '<p class="empty">No tasks assigned yet.</p>';
+  const opts=["not-started","in-progress","done"];
+  return `<h2 class="section-title">Tasks</h2><p class="meta">Update your own progress below — your instructor can see it.</p>`+mine.map(t=>{
+    const st=(store.taskstatus[t.id]||{}).status||"not-started";
+    return `<div class="card"><h3>${esc(t.title)}</h3>
+      <div class="meta">${dueBadge(t.due,st==="done")}</div>
+      <p>${esc(t.description)}</p>
+      <div class="field" style="margin-top:10px;max-width:220px"><label>My progress</label>
+        <select data-role="my-task" data-task="${esc(t.id)}">${opts.map(o=>`<option value="${o}" ${st===o?"selected":""}>${o}</option>`).join("")}</select></div>
+    </div>`;
+  }).join("");
+}
+
+/* ---------- admin helpers ---------- */
+const students = () => store.students||[];
+const nameOf = uid => (students().find(s=>s.id===uid)||{name:uid}).name;
+const activeStudents = () => students().filter(s=>s.status==="active");
+function assigneeChecks(prefix,checked){
+  return `<div class="chip-row">
+    <label><input type="checkbox" data-role="${prefix}-as" value="all" ${checked.includes("all")?"checked":""}> Everyone</label>
+    ${activeStudents().map(s=>`<label><input type="checkbox" data-role="${prefix}-as" value="${esc(s.id)}" ${checked.includes(s.id)?"checked":""}> ${esc(s.name)}</label>`).join("")}
+  </div>`;
+}
+function readAssignees(prefix){ const b=[...$("content").querySelectorAll(`input[data-role="${prefix}-as"]:checked`)].map(x=>x.value); return b.includes("all")?["all"]:b; }
+const newId = coll => doc(collection(db,coll)).id;
+
+/* ---------- admin: students ---------- */
+function vAdmStudents(){
+  if(!store.meta){
+    return `<div class="card warn-card"><h3>Finish setup</h3>
+      <p>Initialize the portal and load the training plan. You can adjust everything afterwards.</p>
+      <button class="btn" id="init-go">Initialize portal</button></div>`;
+  }
+  const pend=students().filter(s=>s.status!=="active");
+  return `<h2 class="section-title">Students</h2>
+    ${pend.length?`<div class="card warn-card"><h3>${pend.length} account(s) awaiting activation</h3>
+      ${pend.map(s=>`<div class="row-actions"><strong>${esc(s.name)}</strong> <span class="meta">${esc(s.email||"")}</span>
+        <button class="btn btn-small" data-role="activate" data-sid="${esc(s.id)}">Activate</button>
+        <button class="btn btn-small btn-danger" data-role="del-student" data-sid="${esc(s.id)}">Remove</button></div>`).join("")}</div>`:""}
+    ${activeStudents().length?activeStudents().map(s=>{
+      const done=s.completedModules||[];
+      return `<div class="card"><h3><span class="who">${avatarHTML(s.name)}${esc(s.name)}</span></h3>
+        <div class="meta">${esc(s.email||"")} · Started ${fmtDate(s.startDate)}</div>
+        <div class="field"><label>Completed modules</label><div class="mod-grid">
+          ${plan().map(m=>`<label><input type="checkbox" data-role="mod" data-sid="${esc(s.id)}" value="${esc(m.id)}" ${done.includes(m.id)?"checked":""}> Day ${esc(m.day)}${m.title?": "+esc(m.title.length>40?m.title.slice(0,40)+"\u2026":m.title):""}</label>`).join("")}
+        </div></div>
+        <div class="row-actions"><button class="btn btn-small btn-danger" data-role="del-student" data-sid="${esc(s.id)}">Remove student</button></div>
+      </div>`;
+    }).join(""):'<p class="empty">No active students yet. Share your site link — students register themselves, then appear here to activate.</p>'}`;
+}
+
+/* ---------- admin: homework ---------- */
+function vAdmHomework(){
+  if(!store.meta) return needInit();
+  const rows=h=>{
+    const t=(h.assignedTo||[]).includes("all")?activeStudents().map(s=>s.id):(h.assignedTo||[]);
+    if(!t.length) return '<p class="meta">No active students assigned.</p>';
+    return t.map(uid=>{ const ev=(store.grades[uid]||{})[h.id]||{};
+      return `<div class="eval-row"><strong>${esc(nameOf(uid))}</strong>
+        <select data-role="ev-status" data-hw="${esc(h.id)}" data-sid="${esc(uid)}">${["pending","submitted","graded"].map(v=>`<option value="${v}" ${(ev.status||"pending")===v?"selected":""}>${v}</option>`).join("")}</select>
+        <input type="text" placeholder="Grade" value="${esc(ev.grade||"")}" data-role="ev-grade" data-hw="${esc(h.id)}" data-sid="${esc(uid)}">
+        <input type="text" placeholder="Feedback for the student" value="${esc(ev.feedback||"")}" data-role="ev-feedback" data-hw="${esc(h.id)}" data-sid="${esc(uid)}"></div>`;
+    }).join("");
+  };
+  return `<h2 class="section-title">Homework</h2>
+    <details class="adder"><summary>+ Assign new homework</summary><div class="card">
+      <div class="form-grid">
+        <div class="field full"><label>Title</label><input type="text" id="nh-title"></div>
+        <div class="field full"><label>Description</label><textarea id="nh-desc"></textarea></div>
+        <div class="field"><label>Due date</label><input type="date" id="nh-due"></div>
+        <div class="field"><label>How to submit</label><input type="text" id="nh-submit" placeholder="Email it to me"></div>
+        <div class="field full"><label>Assign to</label>${assigneeChecks("nh",["all"])}</div>
+      </div><button class="btn" id="nh-add">Assign homework</button></div></details>
+    ${store.homework.length?store.homework.map(h=>`<div class="card"><h3>${esc(h.title)}</h3>
+      <div class="meta">${dueBadge(h.due,false)}<span>Assigned: ${(h.assignedTo||[]).includes("all")?"everyone":(h.assignedTo||[]).map(nameOf).map(esc).join(", ")}</span></div>
+      <p>${esc(h.description)}</p><div style="margin-top:12px">${rows(h)}</div>
+      <div class="row-actions"><button class="btn btn-small btn-danger" data-role="del-hw" data-hw="${esc(h.id)}">Delete homework</button></div></div>`).join(""):'<p class="empty">No homework yet.</p>'}`;
+}
+
+/* ---------- admin: tasks ---------- */
+function vAdmTasks(){
+  if(!store.meta) return needInit();
+  const rows=t=>{ const tg=(t.assignedTo||[]).includes("all")?activeStudents().map(s=>s.id):(t.assignedTo||[]);
+    if(!tg.length) return '<p class="meta">No active students assigned.</p>';
+    return tg.map(uid=>{ const st=((store.taskstatus[uid]||{})[t.id]||{}).status||"not-started";
+      return `<div class="eval-row" style="grid-template-columns:150px 160px"><strong>${esc(nameOf(uid))}</strong>
+        <select data-role="task-status" data-task="${esc(t.id)}" data-sid="${esc(uid)}">${["not-started","in-progress","done"].map(v=>`<option value="${v}" ${st===v?"selected":""}>${v}</option>`).join("")}</select></div>`;
+    }).join("");
+  };
+  return `<h2 class="section-title">Tasks</h2>
+    <details class="adder"><summary>+ Give a new task</summary><div class="card">
+      <div class="form-grid">
+        <div class="field full"><label>Title</label><input type="text" id="nt-title"></div>
+        <div class="field full"><label>Description</label><textarea id="nt-desc"></textarea></div>
+        <div class="field"><label>Due date</label><input type="date" id="nt-due"></div>
+        <div class="field full"><label>Assign to</label>${assigneeChecks("nt",["all"])}</div>
+      </div><button class="btn" id="nt-add">Give task</button></div></details>
+    ${store.tasks.length?store.tasks.map(t=>`<div class="card"><h3>${esc(t.title)}</h3>
+      <div class="meta">${dueBadge(t.due,false)}<span>Assigned: ${(t.assignedTo||[]).includes("all")?"everyone":(t.assignedTo||[]).map(nameOf).map(esc).join(", ")}</span></div>
+      <p>${esc(t.description)}</p><div style="margin-top:12px">${rows(t)}</div>
+      <div class="row-actions"><button class="btn btn-small btn-danger" data-role="del-task" data-task="${esc(t.id)}">Delete task</button></div></div>`).join(""):'<p class="empty">No tasks yet.</p>'}`;
+}
+
+/* ---------- admin: plan editor ---------- */
+function vAdmPlan(){
+  if(!store.meta) return needInit();
+  const loaded=plan().length;
+  const dayBlocks=plan().map(m=>`<div class="card"><h3>Day ${esc(m.day)} — ${esc(m.title)}</h3>
+    <div class="meta">${fmtDate(m.date)} · ${(m.sections||[]).reduce((a,sec)=>a+(sec.topics||[]).length,0)} topics</div>
+    ${(m.sections||[]).map(sec=>`<div class="plan-sec"><div class="plan-sec-title">${esc(sec.content)}</div><ul class="topics">${(sec.topics||[]).map(tp=>`<li>${esc(tp.t)}</li>`).join("")}</ul></div>`).join("")}
+    <div class="row-actions"><button class="btn btn-small btn-danger" data-role="del-day" data-mid="${esc(m.id)}">Delete day</button></div></div>`).join("");
+  return `<h2 class="section-title">Training Plan</h2>
+    ${loaded
+      ? `<div class="meta" style="margin:2px 0 16px">Per-student completion is on the Students tab.<button class="btn btn-small btn-danger" id="load-plan" style="margin-left:10px">Reset plan to built-in default</button></div>`
+      : `<div class="card warn-card">The full SOTI training plan (${SOTI_PLAN.length} days) is built in. Click to load it — this sets the plan for everyone.<div class="row-actions"><button class="btn" id="load-plan">Load the full SOTI training plan</button></div></div>`}
+    ${loaded?dayBlocks:'<p class="empty">No plan loaded yet — click the button above.</p>'}`;
+}
+function needInit(){ return `<div class="card warn-card"><h3>Finish setup first</h3><p>Go to the <strong>Students</strong> tab and click “Initialize portal”.</p></div>`; }
+
+/* ---------- dashboard (admin + manager) ---------- */
+function vDashboard(){
+  if(!store.meta) return role==="manager"
+    ? '<p class="empty">The portal isn’t set up yet. Please check back once your instructor has initialized it.</p>'
+    : needInit();
+  const P=plan().length||1;
+  const studs=activeStudents();
+  const pendingAct=students().filter(s=>s.status!=="active").length;
+  let toReview=0, overdueTotal=0, sumPct=0, totalDoneDays=0;
+  const rows=studs.map(s=>{
+    const doneDays=(s.completedModules||[]).length; totalDoneDays+=doneDays;
+    const pct=Math.round(doneDays/P*100); sumPct+=pct;
+    const g=store.grades[s.id]||{}, ts=store.taskstatus[s.id]||{};
+    const myHw=store.homework.filter(h=>assignedTo(h,s.id));
+    let graded=0,submitted=0,hwOverdue=0;
+    myHw.forEach(h=>{ const st=(g[h.id]||{}).status||"pending"; if(st==="graded")graded++; else if(st==="submitted"){submitted++;toReview++;} else if(h.due&&h.due<today())hwOverdue++; });
+    const myTasks=store.tasks.filter(t=>assignedTo(t,s.id));
+    let tDone=0,tOverdue=0;
+    myTasks.forEach(t=>{ const st=(ts[t.id]||{}).status||"not-started"; if(st==="done")tDone++; else if(t.due&&t.due<today())tOverdue++; });
+    const od=hwOverdue+tOverdue; overdueTotal+=od;
+    const flags=[];
+    if(submitted)flags.push(`<span class="badge b-blue">${submitted} to review</span>`);
+    if(od)flags.push(`<span class="badge b-red">${od} overdue</span>`);
+    if(!flags.length)flags.push(`<span class="badge b-green">On track</span>`);
+    return `<tr>
+      <td><span class="who">${avatarHTML(s.name)}<strong>${esc(s.name)}</strong></span></td>
+      <td><div style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span class="mini-bar"><i style="width:${pct}%"></i></span><strong>${pct}%</strong><span style="color:var(--muted);font-size:.82rem">${doneDays}/${P} days</span></div></td>
+      <td>${graded}/${myHw.length}${submitted?` <span class="badge b-blue">${submitted} new</span>`:""}</td>
+      <td>${tDone}/${myTasks.length}</td>
+      <td>${flags.join(" ")}</td></tr>`;
+  }).join("");
+  const avg=studs.length?Math.round(sumPct/studs.length):0;
+  const cards=`<div class="dash-cards">
+    <div class="card"><div class="stat"><div class="num">${studs.length}</div><div class="lbl">Active trainees</div></div></div>
+    <div class="card"><div class="stat"><div class="num">${avg}%</div><div class="lbl">Avg plan progress</div></div></div>
+    <div class="card"><div class="stat"><div class="num" style="color:var(--accent)">${toReview}</div><div class="lbl">Homework to review</div></div></div>
+    <div class="card"><div class="stat"><div class="num" style="color:${overdueTotal?'var(--red)':'var(--green)'}">${overdueTotal}</div><div class="lbl">Overdue items</div></div></div>
+  </div>`;
+  const cohortBar=`<div class="card"><h3>Technical Support Onboarding</h3>
+    <div class="meta">${avg}% average across ${studs.length} trainee${studs.length===1?"":"s"} · ${totalDoneDays} of ${studs.length*P} day-completions · ${P}-day plan</div>
+    <div class="progress-outer"><div class="progress-inner" style="width:${avg}%"></div></div></div>`;
+  const pendNote=(role==="admin"&&pendingAct)?`<div class="card warn-card">${pendingAct} account(s) awaiting activation — see the Students tab.</div>`:"";
+  const table=studs.length
+    ? `<div class="dash-wrap"><table class="dash"><thead><tr><th>Trainee</th><th>Plan progress</th><th>Homework</th><th>Tasks</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`
+    : '<p class="empty">No active trainees yet.</p>';
+  return `<h2 class="section-title">Progress dashboard</h2>${cards}${cohortBar}${pendNote}${table}`;
+}
+function vAdmManagers(){
+  if(!store.meta) return needInit();
+  const list=store.managerEmails||[];
+  return `<h2 class="section-title">Managers</h2>
+    <div class="card warn-card">Managers can sign in and view the progress dashboard for all trainees, but cannot add, grade, or change anything. Add a manager’s email here, then have them register on the portal using that same email.</div>
+    <div class="card">
+      <div class="field" style="max-width:420px"><label>Add manager by email</label><input type="email" id="mg-email" placeholder="manager@example.com"></div>
+      <button class="btn" id="mg-add">Add manager</button>
+    </div>
+    ${list.length?list.map(e=>`<div class="card"><div class="row-actions"><strong>${esc(e)}</strong><div class="spacer"></div><button class="btn btn-small btn-danger" data-role="mg-del" data-email="${esc(e)}">Remove</button></div></div>`).join(""):'<p class="empty">No managers added yet.</p>'}`;
+}
+
+/* ---------- writes ---------- */
+async function saveMeta(patch){ store.meta={...store.meta,...patch}; await setDoc(metaRef(),store.meta); }
+async function refreshAdmin(){ await loadAdmin(); render(); }
+
+/* ---------- event wiring ---------- */
+function wire(){
+  const c=$("content");
+  // student: own task progress
+  c.querySelectorAll('[data-role="my-task"]').forEach(el=>el.onchange=async()=>{
+    try{ await setDoc(doc(db,"students",user.uid,"taskstatus",el.dataset.task),{status:el.value}); store.taskstatus[el.dataset.task]={status:el.value}; toast("Progress saved"); }
+    catch(e){ toast("Could not save: "+friendly(e)); }
+  });
+
+  // init
+  const initGo=$("init-go");
+  if(initGo) initGo.onclick=async()=>{ initGo.disabled=true; try{
+    await setDoc(metaRef(),{ cohortName:PORTAL_TITLE, instructor:user.email, plan:DEFAULT_PLAN });
+    toast("Portal initialized"); await refreshAdmin();
+  }catch(e){ toast(friendly(e)); initGo.disabled=false; } };
+
+  // students admin
+  c.querySelectorAll('[data-role="activate"]').forEach(el=>el.onclick=async()=>{ await updateDoc(doc(db,"students",el.dataset.sid),{status:"active"}); toast("Activated"); await refreshAdmin(); });
+  c.querySelectorAll('[data-role="del-student"]').forEach(el=>el.onclick=async()=>{ if(!confirm("Remove "+nameOf(el.dataset.sid)+"? Their login stays but their profile/data is deleted.")) return; await deleteDoc(doc(db,"students",el.dataset.sid)); toast("Removed"); await refreshAdmin(); });
+  c.querySelectorAll('[data-role="mod"]').forEach(el=>el.onchange=async()=>{
+    const s=students().find(x=>x.id===el.dataset.sid); const set=new Set(s.completedModules||[]);
+    el.checked?set.add(el.value):set.delete(el.value);
+    s.completedModules=plan().map(m=>m.id).filter(id=>set.has(id));
+    await updateDoc(doc(db,"students",s.id),{completedModules:s.completedModules}); toast("Saved");
+  });
+
+  // homework admin
+  const nhAdd=$("nh-add");
+  if(nhAdd) nhAdd.onclick=async()=>{ const title=$("nh-title").value.trim(); if(!title){toast("Title required");return;}
+    const id=newId("homework");
+    await setDoc(doc(db,"homework",id),{ title, description:$("nh-desc").value.trim(), due:$("nh-due").value||"", submitVia:$("nh-submit").value.trim(), assignedTo:readAssignees("nh") });
+    toast("Homework assigned"); await refreshAdmin(); };
+  const evSave=async el=>{ const uid=el.dataset.sid,hw=el.dataset.hw,field=el.dataset.role.replace("ev-","");
+    const cur=(store.grades[uid]||{})[hw]||{}; cur[field]=el.value.trim?el.value.trim():el.value;
+    await setDoc(doc(db,"students",uid,"grades",hw),cur); store.grades[uid]=store.grades[uid]||{}; store.grades[uid][hw]=cur; toast("Saved"); };
+  c.querySelectorAll('[data-role^="ev-"]').forEach(el=>el.onchange=()=>evSave(el).catch(e=>toast(friendly(e))));
+  c.querySelectorAll('[data-role="del-hw"]').forEach(el=>el.onclick=async()=>{ if(!confirm("Delete this homework?"))return; await deleteDoc(doc(db,"homework",el.dataset.hw)); toast("Deleted"); await refreshAdmin(); });
+
+  // tasks admin
+  const ntAdd=$("nt-add");
+  if(ntAdd) ntAdd.onclick=async()=>{ const title=$("nt-title").value.trim(); if(!title){toast("Title required");return;}
+    const id=newId("tasks");
+    await setDoc(doc(db,"tasks",id),{ title, description:$("nt-desc").value.trim(), due:$("nt-due").value||"", assignedTo:readAssignees("nt") });
+    toast("Task added"); await refreshAdmin(); };
+  c.querySelectorAll('[data-role="task-status"]').forEach(el=>el.onchange=async()=>{ const uid=el.dataset.sid,t=el.dataset.task;
+    await setDoc(doc(db,"students",uid,"taskstatus",t),{status:el.value}); store.taskstatus[uid]=store.taskstatus[uid]||{}; store.taskstatus[uid][t]={status:el.value}; toast("Saved"); });
+  c.querySelectorAll('[data-role="del-task"]').forEach(el=>el.onclick=async()=>{ if(!confirm("Delete this task?"))return; await deleteDoc(doc(db,"tasks",el.dataset.task)); toast("Deleted"); await refreshAdmin(); });
+
+  // plan editor
+  const loadPlan=$("load-plan");
+  if(loadPlan) loadPlan.onclick=async()=>{ if(!confirm("Load the full SOTI plan? This replaces the current training plan for all trainees."))return;
+    try{ await saveMeta({plan:JSON.parse(JSON.stringify(SOTI_PLAN))}); toast("SOTI training plan loaded"); render(); }catch(e){ toast(friendly(e)); } };
+  c.querySelectorAll('[data-role="del-day"]').forEach(el=>el.onclick=async()=>{ if(!confirm("Delete this day?"))return;
+    await saveMeta({plan:plan().filter(m=>m.id!==el.dataset.mid)}); toast("Deleted"); render(); });
+
+  // managers
+  const mgAdd=$("mg-add");
+  if(mgAdd) mgAdd.onclick=async()=>{ const em=$("mg-email").value.trim().toLowerCase();
+    if(!em||em.indexOf("@")<0){ toast("Enter a valid email"); return; }
+    try{ const list=[...new Set([...(store.managerEmails||[]), em])];
+      await setDoc(doc(db,"config","managers"),{emails:list}); store.managerEmails=list; toast("Manager added"); render();
+    }catch(e){ toast(friendly(e)); } };
+  c.querySelectorAll('[data-role="mg-del"]').forEach(el=>el.onclick=async()=>{
+    const list=(store.managerEmails||[]).filter(e=>e!==el.dataset.email);
+    try{ await setDoc(doc(db,"config","managers"),{emails:list}); store.managerEmails=list; toast("Removed"); render(); }
+    catch(e){ toast(friendly(e)); } });
+}
+
+/* ---------- boot ---------- */
+$("logout-btn").onclick=()=>signOut(auth);
+onAuthStateChanged(auth, async u=>{
+  user=u; tab=null; for(const k in store) delete store[k];
+  if(!u){ role=null; renderAuth("login"); return; }
+  $("content").innerHTML='<p class="empty">Loading…</p>';
+  try{
+    if(isAdminEmail(u.email)){ role="admin"; await loadAdmin(); }
+    else if(await isManagerEmail(u.email)){ role="manager"; await loadAdmin(); }
+    else{ await loadStudent(); }
+    renderShell();
+  }catch(e){
+    $("content").innerHTML=`<div class="card warn-card"><h3>Couldn’t load your data</h3><p>${esc(friendly(e))}</p>
+      <p class="meta">If you just set up the project, make sure Firestore is created and the security rules are published (see README).</p>
+      <button class="btn" onclick="location.reload()">Reload</button></div>`;
+  }
+});
+</script>
+</body>
+</html>
