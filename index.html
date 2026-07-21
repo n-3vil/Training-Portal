@@ -592,7 +592,6 @@ function vDashboard(){
   const cards=`<div class="dash-cards">
     <div class="card"><div class="stat"><div class="num">${studs.length}</div><div class="lbl">Active trainees</div></div></div>
     <div class="card"><div class="stat"><div class="num">${avg}%</div><div class="lbl">Avg plan progress</div></div></div>
-    <div class="card"><div class="stat"><div class="num" style="color:${cohortScore!=null?scoreColor(cohortScore):'var(--muted)'}">${cohortScore!=null?cohortScore+"%":"—"}</div><div class="lbl">Avg homework score</div></div></div>
     <div class="card"><div class="stat"><div class="num" style="color:var(--accent)">${toReview}</div><div class="lbl">Homework to review</div></div></div>
     <div class="card"><div class="stat"><div class="num" style="color:${overdueTotal?'var(--red)':'var(--green)'}">${overdueTotal}</div><div class="lbl">Overdue items</div></div></div>
   </div>`;
@@ -605,11 +604,8 @@ function vDashboard(){
     const val=v!=null?`${v}%`:`<span style="color:var(--muted);font-weight:500">n/a</span>`;
     return `<div class="scorebar-row"><span class="scorebar-name">${esc(r.name)}</span><span class="scorebar-track">${fill}</span><span class="scorebar-val">${val}</span></div>`;
   }).join("");
-  const hwCard=`<div class="card"><h3>Homework performance</h3>
-    <div class="meta">${cohortScore!=null
-      ? `Overall score <strong style="color:${scoreColor(cohortScore)}">${cohortScore}%</strong> across ${allScores.length} graded submission${allScores.length===1?"":"s"}`
-      : "No homework graded yet — scores appear here once you grade submissions."}</div>
-    ${cohortScore!=null?`<div class="progress-outer"><div class="progress-inner" style="width:${cohortScore}%;background:${scoreColor(cohortScore)}"></div></div>`:""}
+  const hwCard=`<div class="card"><h3>Homework scores</h3>
+    <div class="meta">Each trainee's average score across the homework you've graded${allScores.length?"":" — nothing graded yet"}.</div>
     ${scoreRows.length?`<div class="scorebars">${bars}</div>`:""}</div>`;
   const pendNote=(role==="admin"&&pendingAct)?`<div class="card warn-card">${pendingAct} account(s) awaiting activation — see the Students tab.</div>`:"";
   const table=studs.length
