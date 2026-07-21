@@ -114,6 +114,13 @@
   .mini-bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#3fbf5e)}
   .dash-cards{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px}
   .dash-cards .card{flex:1;min-width:155px;margin-bottom:0}
+  .scorebars{display:flex;flex-direction:column;gap:11px;margin-top:14px}
+  .scorebar-row{display:grid;grid-template-columns:160px 1fr 48px;gap:12px;align-items:center;font-size:.9rem}
+  .scorebar-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+  .scorebar-track{height:10px;background:#e8ecf3;border-radius:999px;overflow:hidden}
+  .scorebar-track > i{display:block;height:100%;border-radius:999px;transition:width .5s ease}
+  .scorebar-val{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  @media(max-width:640px){.scorebar-row{grid-template-columns:110px 1fr 42px}}
   .plan-day-head h3{font-size:1.16rem;letter-spacing:-.01em}
   .plan-sec{margin-top:16px}
   .plan-sec-title{font-weight:700;color:var(--accent-dark);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border);padding-bottom:7px;margin-bottom:11px}
@@ -167,6 +174,18 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",
 function initials(n){ const p=String(n||"").trim().split(/\s+/); return (((p[0]||"")[0]||"")+((p[1]||"")[0]||"")).toUpperCase()||"?"; }
 const AV_COLORS=["#2872E5","#32B6E9","#2C9446","#E06A1E","#7C4DE0","#0E9BB0"];
 function avatarHTML(name){ let h=0; const t=String(name||""); for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))>>>0; return `<span class="avatar" style="background:${AV_COLORS[h%AV_COLORS.length]}">${esc(initials(name))}</span>`; }
+function scoreColor(v){ return v>=80?'var(--green)':v>=60?'var(--accent)':v>=40?'var(--amber)':'var(--red)'; }
+function parseGrade(g){
+  if(g==null) return null;
+  const s=String(g).trim(); if(!s) return null;
+  const cl=v=>Math.max(0,Math.min(100,v));
+  let m=s.match(/^(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);
+  if(m){ const d=parseFloat(m[2]); return d>0?cl(parseFloat(m[1])/d*100):null; }
+  m=s.match(/^(\d+(?:\.\d+)?)\s*%$/); if(m) return cl(parseFloat(m[1]));
+  m=s.match(/^(\d+(?:\.\d+)?)$/); if(m){ let v=parseFloat(m[1]); return cl(v<=10?v*10:v); }
+  const L={"a+":98,"a":93,"a-":90,"b+":88,"b":83,"b-":80,"c+":78,"c":73,"c-":70,"d+":67,"d":63,"e":50,"f":40};
+  const k=s.toLowerCase(); return L[k]!=null?L[k]:null;
+}
 const today = () => new Date().toISOString().slice(0,10);
 const fmtDate = d => d ? new Date(d+"T00:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"}) : "";
 function toast(m){ $("toast").textContent=m; $("toast").classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>$("toast").classList.remove("show"),2800); }
@@ -538,43 +557,65 @@ function vDashboard(){
   const studs=activeStudents();
   const pendingAct=students().filter(s=>s.status!=="active").length;
   let toReview=0, overdueTotal=0, sumPct=0, totalDoneDays=0;
+  const allScores=[]; const scoreRows=[];
   const rows=studs.map(s=>{
     const doneDays=(s.completedModules||[]).length; totalDoneDays+=doneDays;
     const pct=Math.round(doneDays/P*100); sumPct+=pct;
     const g=store.grades[s.id]||{}, ts=store.taskstatus[s.id]||{};
     const myHw=store.homework.filter(h=>assignedTo(h,s.id));
-    let graded=0,submitted=0,hwOverdue=0;
-    myHw.forEach(h=>{ const st=(g[h.id]||{}).status||"pending"; if(st==="graded")graded++; else if(st==="submitted"){submitted++;toReview++;} else if(h.due&&h.due<today())hwOverdue++; });
+    let graded=0,submitted=0,hwOverdue=0; const sc=[];
+    myHw.forEach(h=>{ const ev=g[h.id]||{}; const st=ev.status||"pending";
+      if(st==="graded"){ graded++; const v=parseGrade(ev.grade); if(v!=null){ sc.push(v); allScores.push(v); } }
+      else if(st==="submitted"){ submitted++; toReview++; }
+      else if(h.due&&h.due<today()){ hwOverdue++; } });
     const myTasks=store.tasks.filter(t=>assignedTo(t,s.id));
     let tDone=0,tOverdue=0;
     myTasks.forEach(t=>{ const st=(ts[t.id]||{}).status||"not-started"; if(st==="done")tDone++; else if(t.due&&t.due<today())tOverdue++; });
     const od=hwOverdue+tOverdue; overdueTotal+=od;
+    const avgScore=sc.length?Math.round(sc.reduce((a,b)=>a+b,0)/sc.length):null;
+    scoreRows.push({name:s.name, avg:avgScore});
     const flags=[];
     if(submitted)flags.push(`<span class="badge b-blue">${submitted} to review</span>`);
     if(od)flags.push(`<span class="badge b-red">${od} overdue</span>`);
     if(!flags.length)flags.push(`<span class="badge b-green">On track</span>`);
+    const scoreCell=avgScore!=null?`<strong style="color:${scoreColor(avgScore)}">${avgScore}%</strong>`:'<span style="color:var(--muted)">—</span>';
     return `<tr>
       <td><span class="who">${avatarHTML(s.name)}<strong>${esc(s.name)}</strong></span></td>
-      <td><div style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span class="mini-bar"><i style="width:${pct}%"></i></span><strong>${pct}%</strong><span style="color:var(--muted);font-size:.82rem">${doneDays}/${P} days</span></div></td>
-      <td>${graded}/${myHw.length}${submitted?` <span class="badge b-blue">${submitted} new</span>`:""}</td>
+      <td><div style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span class="mini-bar"><i style="width:${pct}%"></i></span><strong>${pct}%</strong><span style="color:var(--muted);font-size:.82rem">${doneDays}/${P}d</span></div></td>
+      <td>${graded}/${myHw.length}</td>
+      <td>${scoreCell}</td>
       <td>${tDone}/${myTasks.length}</td>
       <td>${flags.join(" ")}</td></tr>`;
   }).join("");
   const avg=studs.length?Math.round(sumPct/studs.length):0;
+  const cohortScore=allScores.length?Math.round(allScores.reduce((a,b)=>a+b,0)/allScores.length):null;
   const cards=`<div class="dash-cards">
     <div class="card"><div class="stat"><div class="num">${studs.length}</div><div class="lbl">Active trainees</div></div></div>
     <div class="card"><div class="stat"><div class="num">${avg}%</div><div class="lbl">Avg plan progress</div></div></div>
+    <div class="card"><div class="stat"><div class="num" style="color:${cohortScore!=null?scoreColor(cohortScore):'var(--muted)'}">${cohortScore!=null?cohortScore+"%":"—"}</div><div class="lbl">Avg homework score</div></div></div>
     <div class="card"><div class="stat"><div class="num" style="color:var(--accent)">${toReview}</div><div class="lbl">Homework to review</div></div></div>
     <div class="card"><div class="stat"><div class="num" style="color:${overdueTotal?'var(--red)':'var(--green)'}">${overdueTotal}</div><div class="lbl">Overdue items</div></div></div>
   </div>`;
   const cohortBar=`<div class="card"><h3>Technical Support Onboarding</h3>
     <div class="meta">${avg}% average across ${studs.length} trainee${studs.length===1?"":"s"} · ${totalDoneDays} of ${studs.length*P} day-completions · ${P}-day plan</div>
     <div class="progress-outer"><div class="progress-inner" style="width:${avg}%"></div></div></div>`;
+  const bars=scoreRows.map(r=>{
+    const v=r.avg;
+    const fill=v!=null?`<i style="width:${v}%;background:${scoreColor(v)}"></i>`:"";
+    const val=v!=null?`${v}%`:`<span style="color:var(--muted);font-weight:500">n/a</span>`;
+    return `<div class="scorebar-row"><span class="scorebar-name">${esc(r.name)}</span><span class="scorebar-track">${fill}</span><span class="scorebar-val">${val}</span></div>`;
+  }).join("");
+  const hwCard=`<div class="card"><h3>Homework performance</h3>
+    <div class="meta">${cohortScore!=null
+      ? `Overall score <strong style="color:${scoreColor(cohortScore)}">${cohortScore}%</strong> across ${allScores.length} graded submission${allScores.length===1?"":"s"}`
+      : "No homework graded yet — scores appear here once you grade submissions."}</div>
+    ${cohortScore!=null?`<div class="progress-outer"><div class="progress-inner" style="width:${cohortScore}%;background:${scoreColor(cohortScore)}"></div></div>`:""}
+    ${scoreRows.length?`<div class="scorebars">${bars}</div>`:""}</div>`;
   const pendNote=(role==="admin"&&pendingAct)?`<div class="card warn-card">${pendingAct} account(s) awaiting activation — see the Students tab.</div>`:"";
   const table=studs.length
-    ? `<div class="dash-wrap"><table class="dash"><thead><tr><th>Trainee</th><th>Plan progress</th><th>Homework</th><th>Tasks</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`
+    ? `<div class="dash-wrap"><table class="dash"><thead><tr><th>Trainee</th><th>Plan progress</th><th>Homework</th><th>Score</th><th>Tasks</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`
     : '<p class="empty">No active trainees yet.</p>';
-  return `<h2 class="section-title">Progress dashboard</h2>${cards}${cohortBar}${pendNote}${table}`;
+  return `<h2 class="section-title">Progress dashboard</h2>${cards}${cohortBar}${hwCard}${pendNote}${table}`;
 }
 function vAdmManagers(){
   if(!store.meta) return needInit();
